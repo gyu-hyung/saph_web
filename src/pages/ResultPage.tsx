@@ -180,6 +180,7 @@ export default function ResultPage() {
                 width: '100%',
                 borderRadius: '8px',
                 display: 'block',
+                maxHeight: '80vh',
               }}
             />
 

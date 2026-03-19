@@ -126,11 +126,15 @@ export const videoApi = {
     return `${BASE_URL}/api/video/status/${jobId}?token=${encodeURIComponent(token)}`;
   },
 
-  getResultUrl: (jobId: number | string, type: 'original' | 'translated' | 'dual'): string =>
-    `${BASE_URL}/api/video/result/${jobId}?type=${type}`,
+  getResultUrl: (jobId: number | string, type: 'original' | 'translated' | 'dual'): string => {
+    const token = localStorage.getItem('accessToken') || '';
+    return `${BASE_URL}/api/video/result/${jobId}?type=${type}&token=${encodeURIComponent(token)}`;
+  },
 
-  getStreamUrl: (jobId: number | string): string =>
-    `${BASE_URL}/api/video/stream/${jobId}`,
+  getStreamUrl: (jobId: number | string): string => {
+    const token = localStorage.getItem('accessToken') || '';
+    return `${BASE_URL}/api/video/stream/${jobId}?token=${encodeURIComponent(token)}`;
+  },
 
   getJobs: () => apiClient.get<ApiResponse<Job[]>>('/api/jobs'),
 
