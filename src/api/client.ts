@@ -1,5 +1,6 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios';
-import type { ApiResponse, AuthTokens, Member, UploadResult, TranslateResult, Job, CreditPackage, PurchaseResult } from '../types';
+import { auth } from '../lib/firebase';
+import type { ApiResponse, Member, UploadResult, TranslateResult, Job, CreditPackage, PurchaseResult, RegisterResponse } from '../types';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
@@ -8,27 +9,17 @@ const apiClient = axios.create({
   timeout: 30000,
 });
 
-let isRefreshing = false;
-let failedQueue: Array<{
-  resolve: (value: unknown) => void;
-  reject: (reason?: unknown) => void;
-}> = [];
+// Cache the most recent Firebase token for synchronous URL builders (SSE/stream)
+let currentFirebaseToken = '';
 
-function processQueue(error: unknown, token: string | null = null) {
-  failedQueue.forEach(({ resolve, reject }) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve(token);
+apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
+  const user = auth.currentUser;
+  if (user) {
+    const token = await user.getIdToken();
+    currentFirebaseToken = token;
+    if (config.headers) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
-  });
-  failedQueue = [];
-}
-
-apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const token = localStorage.getItem('accessToken');
-  if (token && config.headers) {
-    config.headers['Authorization'] = `Bearer ${token}`;
   }
   return config;
 });
@@ -36,69 +27,36 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        }).then((token) => {
-          originalRequest.headers['Authorization'] = `Bearer ${token}`;
-          return apiClient(originalRequest);
-        });
+    // Firebase tokens auto-refresh via getIdToken() — no manual refresh needed.
+    // If 401, the token was invalid; redirect to login.
+    if (error.response?.status === 401 && !error.config._retry) {
+      error.config._retry = true;
+      const user = auth.currentUser;
+      if (user) {
+        // Force token refresh and retry once
+        const token = await user.getIdToken(true);
+        currentFirebaseToken = token;
+        error.config.headers['Authorization'] = `Bearer ${token}`;
+        return apiClient(error.config);
       }
-
-      originalRequest._retry = true;
-      isRefreshing = true;
-
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (!refreshToken) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
-        return Promise.reject(error);
-      }
-
-      try {
-        const response = await axios.post<ApiResponse<AuthTokens>>(
-          `${BASE_URL}/api/auth/refresh`,
-          { refreshToken }
-        );
-        const { accessToken, refreshToken: newRefreshToken } = response.data.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', newRefreshToken);
-        apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        processQueue(null, accessToken);
-        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        processQueue(refreshError, null);
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
-      } finally {
-        isRefreshing = false;
-      }
+      window.location.href = '/login';
     }
-
     return Promise.reject(error);
   }
 );
 
 export const authApi = {
-  signup: (email: string, password: string, nickname: string) =>
-    apiClient.post<ApiResponse<AuthTokens>>('/api/auth/signup', { email, password, nickname }),
-
-  login: (email: string, password: string) =>
-    apiClient.post<ApiResponse<AuthTokens>>('/api/auth/login', { email, password }),
-
-  refresh: (refreshToken: string) =>
-    apiClient.post<ApiResponse<AuthTokens>>('/api/auth/refresh', { refreshToken }),
+  register: (token: string, nickname?: string) =>
+    axios.post<ApiResponse<RegisterResponse>>(
+      `${BASE_URL}/api/auth/register`,
+      { nickname: nickname ?? null },
+      { headers: { Authorization: `Bearer ${token}` } }
+    ),
 };
 
 export const memberApi = {
   getMe: () => apiClient.get<ApiResponse<Member>>('/api/members/me'),
+  withdraw: () => apiClient.delete<ApiResponse<{ message: string }>>('/api/members/me'),
 };
 
 export const videoApi = {
@@ -121,20 +79,14 @@ export const videoApi = {
       targetLang: targetLang || 'ko',
     }),
 
-  getStatusUrl: (jobId: number | string): string => {
-    const token = localStorage.getItem('accessToken') || '';
-    return `${BASE_URL}/api/video/status/${jobId}?token=${encodeURIComponent(token)}`;
-  },
+  getStatusUrl: (jobId: number | string): string =>
+    `${BASE_URL}/api/video/status/${jobId}?token=${encodeURIComponent(currentFirebaseToken)}`,
 
-  getResultUrl: (jobId: number | string, type: 'original' | 'translated' | 'dual'): string => {
-    const token = localStorage.getItem('accessToken') || '';
-    return `${BASE_URL}/api/video/result/${jobId}?type=${type}&token=${encodeURIComponent(token)}`;
-  },
+  getResultUrl: (jobId: number | string, type: 'original' | 'translated' | 'dual'): string =>
+    `${BASE_URL}/api/video/result/${jobId}?type=${type}&token=${encodeURIComponent(currentFirebaseToken)}`,
 
-  getStreamUrl: (jobId: number | string): string => {
-    const token = localStorage.getItem('accessToken') || '';
-    return `${BASE_URL}/api/video/stream/${jobId}?token=${encodeURIComponent(token)}`;
-  },
+  getStreamUrl: (jobId: number | string): string =>
+    `${BASE_URL}/api/video/stream/${jobId}?token=${encodeURIComponent(currentFirebaseToken)}`,
 
   getJobs: () => apiClient.get<ApiResponse<Job[]>>('/api/jobs'),
 

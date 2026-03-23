@@ -3,15 +3,25 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { videoApi } from '../api/client';
 import { parseSrt, getCurrentSubtitle } from '../utils/srtParser';
 import type { SubtitleEntry } from '../utils/srtParser';
+import SubtitleList from '../components/result/SubtitleList';
+import Timeline from '../components/result/Timeline';
 
 type SubtitleMode = 'translated' | 'original' | 'dual';
 
 function DownloadIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
       <polyline points="7 10 12 15 17 10" />
       <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="6 9 12 15 18 9" />
     </svg>
   );
 }
@@ -23,11 +33,13 @@ export default function ResultPage() {
 
   const [subtitleMode, setSubtitleMode] = useState<SubtitleMode>('translated');
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(0);
   const [originalSubs, setOriginalSubs] = useState<SubtitleEntry[]>([]);
   const [translatedSubs, setTranslatedSubs] = useState<SubtitleEntry[]>([]);
   const [dualSubs, setDualSubs] = useState<SubtitleEntry[]>([]);
   const [isLoadingSubs, setIsLoadingSubs] = useState(true);
   const [error, setError] = useState('');
+  const [downloadDropdownOpen, setDownloadDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!jobId) return;
@@ -38,21 +50,44 @@ export default function ResultPage() {
       videoApi.fetchSrt(jobId, 'translated'),
       videoApi.fetchSrt(jobId, 'dual'),
     ]).then(([origResult, transResult, dualResult]) => {
-      if (origResult.status === 'fulfilled') {
-        setOriginalSubs(parseSrt(origResult.value.data));
-      }
-      if (transResult.status === 'fulfilled') {
-        setTranslatedSubs(parseSrt(transResult.value.data));
-      }
-      if (dualResult.status === 'fulfilled') {
-        setDualSubs(parseSrt(dualResult.value.data));
-      }
+      if (origResult.status === 'fulfilled') setOriginalSubs(parseSrt(origResult.value.data));
+      if (transResult.status === 'fulfilled') setTranslatedSubs(parseSrt(transResult.value.data));
+      if (dualResult.status === 'fulfilled') setDualSubs(parseSrt(dualResult.value.data));
     }).finally(() => setIsLoadingSubs(false));
   }, [jobId]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!downloadDropdownOpen) return;
+    const handleClick = () => setDownloadDropdownOpen(false);
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, [downloadDropdownOpen]);
 
   const handleTimeUpdate = () => {
     if (videoRef.current) {
       setCurrentTimeMs(Math.floor(videoRef.current.currentTime * 1000));
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setVideoDuration(Math.floor(videoRef.current.duration * 1000));
+    }
+  };
+
+  const handleSeek = (ms: number) => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = ms / 1000;
+      setCurrentTimeMs(ms);
+    }
+  };
+
+  const getActiveEntries = (): SubtitleEntry[] => {
+    switch (subtitleMode) {
+      case 'original': return originalSubs;
+      case 'translated': return translatedSubs;
+      case 'dual': return dualSubs;
     }
   };
 
@@ -65,7 +100,6 @@ export default function ResultPage() {
       case 'dual': {
         const dualEntry = getCurrentSubtitle(dualSubs, currentTimeMs);
         if (dualEntry) {
-          // Dual SRT: lines are typically separated by newline within one entry
           const lines = dualEntry.text.split('\n');
           if (lines.length >= 2) {
             return {
@@ -75,7 +109,6 @@ export default function ResultPage() {
           }
           return { main: dualEntry, secondary: null };
         }
-        // Fallback: show both original and translated simultaneously
         return {
           main: getCurrentSubtitle(originalSubs, currentTimeMs),
           secondary: getCurrentSubtitle(translatedSubs, currentTimeMs),
@@ -101,18 +134,26 @@ export default function ResultPage() {
   };
 
   const { main: mainSub, secondary: secondarySub } = getCurrentSubs();
+  const activeEntries = getActiveEntries();
   const streamUrl = jobId ? videoApi.getStreamUrl(jobId) : '';
+
+  const modeLabels: Record<SubtitleMode, string> = {
+    translated: '번역',
+    original: '원본',
+    dual: '동시',
+  };
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <div
         style={{
-          padding: '16px 32px',
+          padding: '12px 24px',
           borderBottom: '1px solid var(--border)',
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
+          gap: '12px',
+          flexShrink: 0,
         }}
       >
         <button
@@ -125,29 +166,116 @@ export default function ResultPage() {
             color: 'var(--text-secondary)',
             fontSize: '13px',
             cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
           }}
         >
           ← 목록으로
         </button>
-        <h1 style={{ fontSize: '18px', fontWeight: 700 }}>결과 플레이어</h1>
+
+        <div style={{ flex: 1 }} />
+
+        {/* Mode Toggle */}
+        <div style={{ display: 'flex', gap: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '3px' }}>
+          {(['translated', 'original', 'dual'] as SubtitleMode[]).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setSubtitleMode(mode)}
+              style={{
+                padding: '5px 14px',
+                borderRadius: '6px',
+                border: 'none',
+                background: subtitleMode === mode ? 'var(--accent)' : 'transparent',
+                color: subtitleMode === mode ? '#fff' : 'var(--text-secondary)',
+                fontSize: '13px',
+                fontWeight: subtitleMode === mode ? 600 : 400,
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+              }}
+            >
+              {modeLabels[mode]}
+            </button>
+          ))}
+        </div>
+
         {isLoadingSubs && (
-          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>자막 로드 중...</span>
+          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>로드 중...</span>
         )}
+
+        {/* Download Dropdown */}
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setDownloadDropdownOpen((v) => !v);
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 14px',
+              background: 'transparent',
+              border: '1px solid var(--border)',
+              borderRadius: '6px',
+              color: 'var(--text-secondary)',
+              fontSize: '13px',
+              cursor: 'pointer',
+            }}
+          >
+            <DownloadIcon /> 다운로드 <ChevronDownIcon />
+          </button>
+          {downloadDropdownOpen && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '100%',
+                right: 0,
+                marginTop: '4px',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                zIndex: 50,
+                minWidth: '160px',
+                overflow: 'hidden',
+              }}
+            >
+              {(['original', 'translated', 'dual'] as const).map((type) => (
+                <button
+                  key={type}
+                  onClick={() => handleDownload(type)}
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    padding: '10px 16px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--text-primary)',
+                    fontSize: '13px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                >
+                  {type === 'original' ? '원본 자막' : type === 'translated' ? '번역 자막' : '이중 자막'}
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginLeft: '6px' }}>.srt</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {error && (
         <div
           style={{
-            padding: '10px 32px',
+            padding: '8px 24px',
             background: 'rgba(239, 68, 68, 0.1)',
             color: 'var(--error)',
             fontSize: '13px',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            flexShrink: 0,
           }}
         >
           {error}
@@ -155,8 +283,27 @@ export default function ResultPage() {
         </div>
       )}
 
-      <div style={{ flex: 1, display: 'flex', gap: 0, overflow: 'hidden' }}>
-        {/* Video Player */}
+      {/* Main Content: Subtitle List + Video */}
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+        {/* Left: Subtitle List */}
+        <div
+          style={{
+            width: '300px',
+            borderRight: '1px solid var(--border)',
+            flexShrink: 0,
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <SubtitleList
+            entries={activeEntries}
+            currentTimeMs={currentTimeMs}
+            onSeek={handleSeek}
+          />
+        </div>
+
+        {/* Center: Video Player */}
         <div
           style={{
             flex: 1,
@@ -164,23 +311,23 @@ export default function ResultPage() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '24px',
             background: '#000',
             position: 'relative',
             overflow: 'hidden',
           }}
         >
-          <div style={{ position: 'relative', width: '100%', maxWidth: '800px' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '900px', padding: '16px' }}>
             <video
               ref={videoRef}
               src={streamUrl}
               controls
               onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
               style={{
                 width: '100%',
                 borderRadius: '8px',
                 display: 'block',
-                maxHeight: '80vh',
+                maxHeight: '70vh',
               }}
             />
 
@@ -189,12 +336,12 @@ export default function ResultPage() {
               <div
                 style={{
                   position: 'absolute',
-                  bottom: '60px',
+                  bottom: '76px',
                   left: '50%',
                   transform: 'translateX(-50%)',
                   textAlign: 'center',
                   pointerEvents: 'none',
-                  width: '90%',
+                  width: '85%',
                   maxWidth: '700px',
                 }}
               >
@@ -238,129 +385,16 @@ export default function ResultPage() {
               </div>
             )}
           </div>
-
-          {/* Subtitle Mode Toggle */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '8px',
-              marginTop: '16px',
-            }}
-          >
-            {(['translated', 'original', 'dual'] as SubtitleMode[]).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setSubtitleMode(mode)}
-                style={{
-                  padding: '7px 16px',
-                  borderRadius: '20px',
-                  border: subtitleMode === mode ? '1px solid var(--accent)' : '1px solid var(--border)',
-                  background: subtitleMode === mode ? 'var(--accent-light)' : 'transparent',
-                  color: subtitleMode === mode ? 'var(--accent)' : 'var(--text-secondary)',
-                  fontSize: '13px',
-                  fontWeight: subtitleMode === mode ? 600 : 400,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s',
-                }}
-              >
-                {mode === 'translated' ? '번역' : mode === 'original' ? '원본' : '동시'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Right Panel */}
-        <div
-          style={{
-            width: '240px',
-            borderLeft: '1px solid var(--border)',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            background: 'rgba(255,255,255,0.02)',
-            flexShrink: 0,
-          }}
-        >
-          <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px' }}>
-            자막 다운로드
-          </h3>
-
-          {(['original', 'translated', 'dual'] as const).map((type) => (
-            <button
-              key={type}
-              onClick={() => handleDownload(type)}
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: '10px',
-                color: 'var(--text-primary)',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                transition: 'all 0.15s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--accent)';
-                e.currentTarget.style.background = 'var(--accent-light)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border)';
-                e.currentTarget.style.background = 'var(--bg-card)';
-              }}
-            >
-              <span>
-                {type === 'original' ? '원본 자막' : type === 'translated' ? '번역 자막' : '이중 자막'}
-                <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
-                  .srt
-                </span>
-              </span>
-              <DownloadIcon />
-            </button>
-          ))}
-
-          <div
-            style={{
-              marginTop: '16px',
-              padding: '12px',
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border)',
-              borderRadius: '10px',
-            }}
-          >
-            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
-              자막 모드
-            </p>
-            {(['translated', 'original', 'dual'] as SubtitleMode[]).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setSubtitleMode(mode)}
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  borderRadius: '6px',
-                  border: 'none',
-                  background: subtitleMode === mode ? 'var(--accent-light)' : 'transparent',
-                  color: subtitleMode === mode ? 'var(--accent)' : 'var(--text-secondary)',
-                  fontSize: '13px',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  marginBottom: '4px',
-                  fontWeight: subtitleMode === mode ? 600 : 400,
-                  transition: 'all 0.15s',
-                }}
-              >
-                {mode === 'translated' ? '번역 (한국어)' : mode === 'original' ? '원본 언어' : '동시 표시'}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
+
+      {/* Bottom: Timeline */}
+      <Timeline
+        entries={activeEntries}
+        durationMs={videoDuration}
+        currentTimeMs={currentTimeMs}
+        onSeek={handleSeek}
+      />
     </div>
   );
 }

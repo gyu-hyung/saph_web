@@ -1,17 +1,33 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  type User as FirebaseUser,
+} from 'firebase/auth';
+import { auth, googleProvider, appleProvider } from '../lib/firebase';
 import { authApi, memberApi } from '../api/client';
 import type { Member } from '../types';
 
 interface AuthContextValue {
   member: Member | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string, nickname: string) => Promise<void>;
-  logout: () => void;
+  loginWithEmail: (email: string, password: string) => Promise<void>;
+  signupWithEmail: (email: string, password: string, nickname: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  loginWithApple: () => Promise<void>;
+  logout: () => Promise<void>;
   refreshMember: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+async function ensureRegistered(firebaseUser: FirebaseUser, nickname?: string) {
+  const token = await firebaseUser.getIdToken();
+  await authApi.register(token, nickname);
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [member, setMember] = useState<Member | null>(null);
@@ -27,38 +43,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      refreshMember().finally(() => setIsLoading(false));
-    } else {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          await ensureRegistered(firebaseUser);
+          await refreshMember();
+        } catch (error) {
+          console.error("Firebase auth succeeded but backend registration/refresh failed:");
+          console.error(error);
+          setMember(null);
+        }
+      } else {
+        setMember(null);
+      }
       setIsLoading(false);
-    }
+    });
+    return unsubscribe;
   }, [refreshMember]);
 
-  const login = async (email: string, password: string) => {
-    const response = await authApi.login(email, password);
-    const { accessToken, refreshToken } = response.data.data;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  const loginWithEmail = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password);
+    // onAuthStateChanged handles ensureRegistered + refreshMember
+  };
+
+  const signupWithEmail = async (email: string, password: string, nickname: string) => {
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
+    await ensureRegistered(credential.user, nickname);
     await refreshMember();
   };
 
-  const signup = async (email: string, password: string, nickname: string) => {
-    const response = await authApi.signup(email, password, nickname);
-    const { accessToken, refreshToken } = response.data.data;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    await refreshMember();
+  const loginWithGoogle = async () => {
+    await signInWithPopup(auth, googleProvider);
   };
 
-  const logout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+  const loginWithApple = async () => {
+    await signInWithPopup(auth, appleProvider);
+  };
+
+  const logout = async () => {
+    await signOut(auth);
     setMember(null);
   };
 
   return (
-    <AuthContext.Provider value={{ member, isLoading, login, signup, logout, refreshMember }}>
+    <AuthContext.Provider value={{
+      member, isLoading,
+      loginWithEmail, signupWithEmail,
+      loginWithGoogle, loginWithApple,
+      logout, refreshMember,
+    }}>
       {children}
     </AuthContext.Provider>
   );

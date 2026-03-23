@@ -4,10 +4,10 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+export interface RegisterResponse {
+  memberId: number;
+  email: string | null;
+  nickname: string | null;
 }
 
 export interface Member {
