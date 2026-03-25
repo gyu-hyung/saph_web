@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { videoApi } from '../api/client';
-import { parseSrt, getCurrentSubtitle } from '../utils/srtParser';
+import { parseSrt, getCurrentSubtitle, applyOffset } from '../utils/srtParser';
 import type { SubtitleEntry } from '../utils/srtParser';
+import type { SubtitleSettingsState } from '../components/result/SubtitleSettings';
 import SubtitleList from '../components/result/SubtitleList';
 import Timeline from '../components/result/Timeline';
+import SubtitleSettings from '../components/result/SubtitleSettings';
 
 type SubtitleMode = 'translated' | 'original' | 'dual';
 
@@ -40,6 +43,13 @@ export default function ResultPage() {
   const [isLoadingSubs, setIsLoadingSubs] = useState(true);
   const [error, setError] = useState('');
   const [downloadDropdownOpen, setDownloadDropdownOpen] = useState(false);
+  const [subtitleSettings, setSubtitleSettings] = useState<SubtitleSettingsState>({
+    fontSize: 18,
+    fontFamily: 'Inter',
+    bgOpacity: 0.75,
+    textColor: '#ffffff',
+    offsetMs: 0,
+  });
 
   useEffect(() => {
     if (!jobId) return;
@@ -84,21 +94,25 @@ export default function ResultPage() {
   };
 
   const getActiveEntries = (): SubtitleEntry[] => {
-    switch (subtitleMode) {
-      case 'original': return originalSubs;
-      case 'translated': return translatedSubs;
-      case 'dual': return dualSubs;
-    }
+    const entries = (() => {
+      switch (subtitleMode) {
+        case 'original': return originalSubs;
+        case 'translated': return translatedSubs;
+        case 'dual': return dualSubs;
+      }
+    })();
+    return applyOffset(entries, subtitleSettings.offsetMs);
   };
 
   const getCurrentSubs = () => {
+    const offsetSubs = (subs: SubtitleEntry[]) => applyOffset(subs, subtitleSettings.offsetMs);
     switch (subtitleMode) {
       case 'original':
-        return { main: getCurrentSubtitle(originalSubs, currentTimeMs), secondary: null };
+        return { main: getCurrentSubtitle(offsetSubs(originalSubs), currentTimeMs), secondary: null };
       case 'translated':
-        return { main: getCurrentSubtitle(translatedSubs, currentTimeMs), secondary: null };
+        return { main: getCurrentSubtitle(offsetSubs(translatedSubs), currentTimeMs), secondary: null };
       case 'dual': {
-        const dualEntry = getCurrentSubtitle(dualSubs, currentTimeMs);
+        const dualEntry = getCurrentSubtitle(offsetSubs(dualSubs), currentTimeMs);
         if (dualEntry) {
           const lines = dualEntry.text.split('\n');
           if (lines.length >= 2) {
@@ -110,8 +124,8 @@ export default function ResultPage() {
           return { main: dualEntry, secondary: null };
         }
         return {
-          main: getCurrentSubtitle(originalSubs, currentTimeMs),
-          secondary: getCurrentSubtitle(translatedSubs, currentTimeMs),
+          main: getCurrentSubtitle(offsetSubs(originalSubs), currentTimeMs),
+          secondary: getCurrentSubtitle(offsetSubs(translatedSubs), currentTimeMs),
         };
       }
     }
@@ -144,7 +158,13 @@ export default function ResultPage() {
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+    >
       {/* Header */}
       <div
         style={{
@@ -349,12 +369,13 @@ export default function ResultPage() {
                   <div
                     style={{
                       display: 'inline-block',
-                      background: 'rgba(0,0,0,0.75)',
+                      background: `rgba(0,0,0,${subtitleSettings.bgOpacity})`,
                       padding: '6px 14px',
                       borderRadius: '4px',
-                      fontSize: '18px',
+                      fontSize: `${subtitleSettings.fontSize}px`,
                       fontWeight: 500,
-                      color: '#ffffff',
+                      color: subtitleSettings.textColor,
+                      fontFamily: subtitleSettings.fontFamily,
                       textShadow: '0 1px 3px rgba(0,0,0,0.8)',
                       marginBottom: secondarySub ? '4px' : 0,
                       lineHeight: 1.4,
@@ -368,12 +389,13 @@ export default function ResultPage() {
                     <div
                       style={{
                         display: 'inline-block',
-                        background: 'rgba(0,0,0,0.75)',
+                        background: `rgba(0,0,0,${subtitleSettings.bgOpacity})`,
                         padding: '6px 14px',
                         borderRadius: '4px',
-                        fontSize: '16px',
+                        fontSize: `${subtitleSettings.fontSize - 2}px`,
                         fontWeight: 400,
-                        color: '#fffde7',
+                        color: subtitleSettings.textColor,
+                        fontFamily: subtitleSettings.fontFamily,
                         textShadow: '0 1px 3px rgba(0,0,0,0.8)',
                         lineHeight: 1.4,
                       }}
@@ -395,6 +417,12 @@ export default function ResultPage() {
         currentTimeMs={currentTimeMs}
         onSeek={handleSeek}
       />
-    </div>
+
+      {/* Subtitle Settings Panel */}
+      <SubtitleSettings
+        settings={subtitleSettings}
+        onSettingsChange={setSubtitleSettings}
+      />
+    </motion.div>
   );
 }

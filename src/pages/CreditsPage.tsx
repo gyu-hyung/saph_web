@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { creditApi } from '../api/client';
 import type { CreditPackage } from '../types';
 
@@ -63,7 +64,13 @@ export default function CreditsPage() {
   const featuredIndex = 2; // HOUR_1 is featured
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+    >
       {/* Header */}
       <div
         style={{
@@ -371,6 +378,6 @@ export default function CreditsPage() {
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

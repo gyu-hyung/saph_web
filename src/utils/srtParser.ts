@@ -60,3 +60,12 @@ export function getCurrentSubtitle(
   }
   return null;
 }
+
+export function applyOffset(entries: SubtitleEntry[], offsetMs: number): SubtitleEntry[] {
+  if (offsetMs === 0) return entries;
+  return entries.map((e) => ({
+    ...e,
+    startMs: Math.max(0, e.startMs + offsetMs),
+    endMs: Math.max(0, e.endMs + offsetMs),
+  }));
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { videoApi } from '../api/client';
 import type { Job } from '../types';
 
@@ -78,7 +79,13 @@ export default function MyVideosPage() {
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+    >
       {/* Header */}
       <div
         style={{
@@ -301,6 +308,6 @@ export default function MyVideosPage() {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { videoApi } from '../api/client';
 import type { SSEEvent } from '../types';
 
@@ -180,7 +181,10 @@ export default function ProcessingPage() {
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
         style={{
           padding: '24px 32px',
           borderBottom: '1px solid var(--border)',
@@ -190,7 +194,7 @@ export default function ProcessingPage() {
         <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
           Job #{jobId}
         </p>
-      </div>
+      </motion.div>
 
       <div style={{ flex: 1, display: 'flex', gap: 0, overflow: 'hidden' }}>
         {/* Main Area */}
@@ -205,225 +209,330 @@ export default function ProcessingPage() {
             gap: '32px',
           }}
         >
-          {status === 'loading' && (
-            <div
-              style={{
-                width: '64px',
-                height: '64px',
-                border: '3px solid var(--border)',
-                borderTopColor: 'var(--accent)',
-                borderRadius: '50%',
-                animation: 'spin 0.8s linear infinite',
-              }}
-            />
-          )}
-
-          {status === 'queued' && (
-            <>
-              <div style={{ textAlign: 'center' }}>
-                <p
-                  style={{
-                    fontSize: '28px',
-                    fontWeight: 700,
-                    letterSpacing: '0.05em',
-                    background: 'linear-gradient(90deg, #7c3aed, #3b82f6)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    marginBottom: '12px',
-                  }}
-                >
-                  WAITING IN QUEUE...
-                </p>
-                {queuePosition !== null && (
-                  <p style={{ fontSize: '18px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                    Queue Position:{' '}
-                    <span style={{ fontWeight: 700, color: 'var(--warning)' }}>#{queuePosition}</span>
-                  </p>
-                )}
-                {estimatedWait !== null && (
-                  <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
-                    예상 대기 시간: {formatWaitTime(estimatedWait)}
-                  </p>
-                )}
-              </div>
-
-              {/* Spinner */}
-              <div style={{ position: 'relative', width: '80px', height: '80px' }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    border: '3px solid var(--border)',
-                    borderTopColor: 'var(--accent)',
-                    borderRadius: '50%',
-                    animation: 'spin 1s linear infinite',
-                  }}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: '12px',
-                    border: '3px solid var(--border)',
-                    borderTopColor: 'var(--info)',
-                    borderRadius: '50%',
-                    animation: 'spin 1.5s linear infinite reverse',
-                  }}
-                />
-              </div>
-
-              <div
+          <AnimatePresence mode="wait">
+            {status === 'loading' && (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
                 style={{
-                  padding: '12px 20px',
-                  background: 'rgba(124, 58, 237, 0.1)',
-                  border: '1px solid var(--border-accent)',
-                  borderRadius: '10px',
-                  fontSize: '13px',
-                  color: 'var(--text-secondary)',
+                  width: '64px',
+                  height: '64px',
+                  border: '3px solid var(--border)',
+                  borderTopColor: 'var(--accent)',
+                  borderRadius: '50%',
+                  animation: 'spin 0.8s linear infinite',
+                }}
+              />
+            )}
+
+            {status === 'queued' && (
+              <motion.div
+                key="queued"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                style={{
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '32px',
                 }}
               >
-                <span style={{ color: 'var(--warning)' }}>⚠</span>
-                창을 닫으시면 대기 순번을 잃을 수 있습니다.
-              </div>
-            </>
-          )}
-
-          {status === 'processing' && (
-            <>
-              <div style={{ textAlign: 'center' }}>
-                <p
-                  style={{
-                    fontSize: '24px',
-                    fontWeight: 700,
-                    marginBottom: '8px',
-                  }}
-                >
-                  처리 중...
-                </p>
-                {currentMessage && (
-                  <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                    {currentMessage}
-                  </p>
-                )}
-              </div>
-
-              <div style={{ width: '100%', maxWidth: '400px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>전체 진행률</span>
-                  <span style={{ fontSize: '13px', fontWeight: 600 }}>{overallPercent}%</span>
+                <div style={{ textAlign: 'center' }}>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    style={{
+                      fontSize: '28px',
+                      fontWeight: 700,
+                      letterSpacing: '0.05em',
+                      background: 'linear-gradient(90deg, #7c3aed, #3b82f6)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      marginBottom: '12px',
+                    }}
+                  >
+                    WAITING IN QUEUE...
+                  </motion.p>
+                  {queuePosition !== null && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 }}
+                      style={{ fontSize: '18px', color: 'var(--text-secondary)', marginBottom: '8px' }}
+                    >
+                      Queue Position:{' '}
+                      <span style={{ fontWeight: 700, color: 'var(--warning)' }}>#{queuePosition}</span>
+                    </motion.p>
+                  )}
+                  {estimatedWait !== null && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      style={{ fontSize: '14px', color: 'var(--text-muted)' }}
+                    >
+                      예상 대기 시간: {formatWaitTime(estimatedWait)}
+                    </motion.p>
+                  )}
                 </div>
-                <div
-                  style={{
-                    height: '8px',
-                    background: 'var(--border)',
-                    borderRadius: '4px',
-                    overflow: 'hidden',
-                  }}
+
+                {/* Spinner */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 100, damping: 15, delay: 0.1 }}
+                  style={{ position: 'relative', width: '80px', height: '80px' }}
                 >
                   <div
                     style={{
-                      height: '100%',
-                      width: `${overallPercent}%`,
-                      background: 'linear-gradient(90deg, var(--accent), var(--info))',
-                      borderRadius: '4px',
-                      transition: 'width 0.5s ease',
+                      position: 'absolute',
+                      inset: 0,
+                      border: '3px solid var(--border)',
+                      borderTopColor: 'var(--accent)',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite, pulse-glow 2s ease-in-out infinite',
                     }}
                   />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: '12px',
+                      border: '3px solid var(--border)',
+                      borderTopColor: 'var(--info)',
+                      borderRadius: '50%',
+                      animation: 'spin 1.5s linear infinite reverse',
+                    }}
+                  />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  style={{
+                    padding: '12px 20px',
+                    background: 'rgba(124, 58, 237, 0.1)',
+                    border: '1px solid var(--border-accent)',
+                    borderRadius: '10px',
+                    fontSize: '13px',
+                    color: 'var(--text-secondary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <span style={{ color: 'var(--warning)' }}>⚠</span>
+                  창을 닫으시면 대기 순번을 잃을 수 있습니다.
+                </motion.div>
+              </motion.div>
+            )}
+
+            {status === 'processing' && (
+              <motion.div
+                key="processing"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '32px',
+                }}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <p
+                    style={{
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      marginBottom: '8px',
+                    }}
+                  >
+                    처리 중...
+                  </p>
+                  {currentMessage && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      key={currentMessage}
+                      transition={{ duration: 0.3 }}
+                      style={{ fontSize: '14px', color: 'var(--text-secondary)' }}
+                    >
+                      {currentMessage}
+                    </motion.p>
+                  )}
                 </div>
-              </div>
 
-              <div
-                style={{
-                  padding: '12px 20px',
-                  background: 'rgba(124, 58, 237, 0.1)',
-                  border: '1px solid var(--border-accent)',
-                  borderRadius: '10px',
-                  fontSize: '13px',
-                  color: 'var(--text-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                <span style={{ color: 'var(--warning)' }}>⚠</span>
-                처리가 완료될 때까지 창을 닫지 마세요.
-              </div>
-            </>
-          )}
+                <div style={{ width: '100%', maxWidth: '400px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>전체 진행률</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600 }}>{overallPercent}%</span>
+                  </div>
+                  <div
+                    style={{
+                      height: '8px',
+                      background: 'var(--border)',
+                      borderRadius: '4px',
+                      overflow: 'hidden',
+                      position: 'relative',
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${overallPercent}%`,
+                        background: 'linear-gradient(90deg, var(--accent), var(--info))',
+                        borderRadius: '4px',
+                        transition: 'width 0.5s ease',
+                        position: 'relative',
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                          animation: 'shimmer 1.5s infinite',
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-          {status === 'completed' && (
-            <div style={{ textAlign: 'center' }}>
-              <div
-                style={{
-                  width: '72px',
-                  height: '72px',
-                  background: 'rgba(16, 185, 129, 0.15)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 20px',
-                  fontSize: '32px',
-                }}
-              >
-                ✓
-              </div>
-              <p style={{ fontSize: '22px', fontWeight: 700, marginBottom: '8px', color: 'var(--success)' }}>
-                완료!
-              </p>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                결과 화면으로 이동합니다...
-              </p>
-            </div>
-          )}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  style={{
+                    padding: '12px 20px',
+                    background: 'rgba(124, 58, 237, 0.1)',
+                    border: '1px solid var(--border-accent)',
+                    borderRadius: '10px',
+                    fontSize: '13px',
+                    color: 'var(--text-secondary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <span style={{ color: 'var(--warning)' }}>⚠</span>
+                  처리가 완료될 때까지 창을 닫지 마세요.
+                </motion.div>
+              </motion.div>
+            )}
 
-          {status === 'failed' && (
-            <div style={{ textAlign: 'center', maxWidth: '400px' }}>
-              <div
-                style={{
-                  width: '72px',
-                  height: '72px',
-                  background: 'rgba(239, 68, 68, 0.15)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 20px',
-                  fontSize: '32px',
-                  color: 'var(--error)',
-                }}
+            {status === 'completed' && (
+              <motion.div
+                key="completed"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ textAlign: 'center' }}
               >
-                ✕
-              </div>
-              <p style={{ fontSize: '22px', fontWeight: 700, marginBottom: '12px', color: 'var(--error)' }}>
-                처리 실패
-              </p>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                {errorMessage}
-              </p>
-              <button
-                onClick={() => navigate('/')}
-                style={{
-                  padding: '12px 32px',
-                  background: 'var(--accent)',
-                  border: 'none',
-                  borderRadius: '8px',
-                  color: '#fff',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 15,
+                    delay: 0.1,
+                  }}
+                  style={{
+                    width: '72px',
+                    height: '72px',
+                    background: 'rgba(16, 185, 129, 0.15)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 20px',
+                    fontSize: '32px',
+                  }}
+                >
+                  ✓
+                </motion.div>
+                <p style={{ fontSize: '22px', fontWeight: 700, marginBottom: '8px', color: 'var(--success)' }}>
+                  완료!
+                </p>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                  결과 화면으로 이동합니다...
+                </p>
+              </motion.div>
+            )}
+
+            {status === 'failed' && (
+              <motion.div
+                key="failed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                style={{ textAlign: 'center', maxWidth: '400px' }}
               >
-                대시보드로 돌아가기
-              </button>
-            </div>
-          )}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 150,
+                    damping: 15,
+                    delay: 0.1,
+                  }}
+                  style={{
+                    width: '72px',
+                    height: '72px',
+                    background: 'rgba(239, 68, 68, 0.15)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 20px',
+                    fontSize: '32px',
+                    color: 'var(--error)',
+                  }}
+                >
+                  ✕
+                </motion.div>
+                <p style={{ fontSize: '22px', fontWeight: 700, marginBottom: '12px', color: 'var(--error)' }}>
+                  처리 실패
+                </p>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  {errorMessage}
+                </p>
+                <button
+                  onClick={() => navigate('/')}
+                  style={{
+                    padding: '12px 32px',
+                    background: 'var(--accent)',
+                    border: 'none',
+                    borderRadius: '8px',
+                    color: '#fff',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  대시보드로 돌아가기
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Right Panel */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
           style={{
             width: '280px',
             borderLeft: '1px solid var(--border)',
@@ -431,7 +540,8 @@ export default function ProcessingPage() {
             display: 'flex',
             flexDirection: 'column',
             gap: '8px',
-            background: 'rgba(255,255,255,0.02)',
+            background: 'rgba(13, 13, 26, 0.8)',
+            backdropFilter: 'blur(20px)',
             flexShrink: 0,
           }}
         >
@@ -439,15 +549,22 @@ export default function ProcessingPage() {
             Processing Progress
           </h3>
 
-          {steps.map((step) => (
-            <div
+          {steps.map((step, idx) => (
+            <motion.div
               key={step.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 * idx, duration: 0.3 }}
               style={{
                 padding: '14px',
                 background: 'var(--bg-card)',
                 borderRadius: '10px',
                 border: '1px solid var(--border)',
                 marginBottom: '8px',
+                boxShadow: step.status === 'processing'
+                  ? '0 0 0 1px rgba(124,58,237,0.4), 0 4px 16px rgba(124,58,237,0.15)'
+                  : 'none',
+                transition: 'box-shadow 0.3s',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
@@ -491,7 +608,7 @@ export default function ProcessingPage() {
                   />
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
 
           <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
@@ -521,7 +638,7 @@ export default function ProcessingPage() {
               {status === 'queued' ? 'Waiting in queue' : 'Analysis and Transcription'}
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>

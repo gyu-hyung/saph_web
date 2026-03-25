@@ -1,5 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from '../store/authStore';
 
 export default function LoginPage() {
@@ -105,7 +106,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
       style={{
         minHeight: '100vh',
         background: 'linear-gradient(135deg, #0d0d1a 0%, #1a0a2e 50%, #0d1a2e 100%)',
@@ -394,6 +399,6 @@ export default function LoginPage() {
           </Link>
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }
