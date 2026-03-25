@@ -95,25 +95,25 @@ export default function SubtitleList({ entries, currentTimeMs, onSeek }: Props) 
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
                 #{entry.index}
               </span>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
                 {formatTimestamp(entry.startMs)}
               </span>
               <CpsBadge cps={cps} />
             </div>
             {isDual ? (
               <>
-                <div style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                <div style={{ fontSize: '15px', color: 'var(--text-primary)', lineHeight: 1.5 }}>
                   {lines[0]}
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                <div style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   {lines.slice(1).join('\n')}
                 </div>
               </>
             ) : (
-              <div style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '15px', color: 'var(--text-primary)', lineHeight: 1.5 }}>
                 {entry.text}
               </div>
             )}

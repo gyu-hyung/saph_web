@@ -50,6 +50,13 @@ export default function ResultPage() {
     textColor: '#ffffff',
     offsetMs: 0,
   });
+  const [leftPct, setLeftPct] = useState(50);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => stopRaf();
+  }, []);
 
   useEffect(() => {
     if (!jobId) return;
@@ -66,6 +73,37 @@ export default function ResultPage() {
     }).finally(() => setIsLoadingSubs(false));
   }, [jobId]);
 
+  // Spacebar toggle play/pause
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      const video = videoRef.current;
+      if (!video) return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        video.paused ? video.play() : video.pause();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        video.currentTime = Math.max(0, video.currentTime - 5);
+        setCurrentTimeMs(Math.floor(video.currentTime * 1000));
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        video.currentTime = Math.min(video.duration, video.currentTime + 5);
+        setCurrentTimeMs(Math.floor(video.currentTime * 1000));
+      } else if (e.code === 'ArrowUp') {
+        e.preventDefault();
+        video.volume = Math.min(1, Math.round((video.volume + 0.1) * 10) / 10);
+      } else if (e.code === 'ArrowDown') {
+        e.preventDefault();
+        video.volume = Math.max(0, Math.round((video.volume - 0.1) * 10) / 10);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown, { capture: true });
+    return () => document.removeEventListener('keydown', handleKeyDown, { capture: true });
+  }, []);
+
   // Close dropdown on outside click
   useEffect(() => {
     if (!downloadDropdownOpen) return;
@@ -74,9 +112,47 @@ export default function ResultPage() {
     return () => document.removeEventListener('click', handleClick);
   }, [downloadDropdownOpen]);
 
+  // Resizable panels
+  const handleResizeStart = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const totalWidth = containerRef.current?.getBoundingClientRect().width ?? 0;
+
+    const onMouseMove = (ev: MouseEvent) => {
+      if (totalWidth === 0) return;
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const x = ev.clientX - rect.left;
+      const pct = Math.max(20, Math.min(80, (x / rect.width) * 100));
+      setLeftPct(pct);
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
   const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      setCurrentTimeMs(Math.floor(videoRef.current.currentTime * 1000));
+    // onTimeUpdate는 ~4Hz로 발생하므로 rAF 루프로 부드럽게 보간
+  };
+
+  const startRaf = () => {
+    const tick = () => {
+      if (videoRef.current) {
+        setCurrentTimeMs(Math.floor(videoRef.current.currentTime * 1000));
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+  };
+
+  const stopRaf = () => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     }
   };
 
@@ -304,11 +380,11 @@ export default function ResultPage() {
       )}
 
       {/* Main Content: Subtitle List + Video */}
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <div ref={containerRef} style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Left: Subtitle List */}
         <div
           style={{
-            width: '300px',
+            width: `${leftPct}%`,
             borderRight: '1px solid var(--border)',
             flexShrink: 0,
             overflow: 'hidden',
@@ -322,6 +398,18 @@ export default function ResultPage() {
             onSeek={handleSeek}
           />
         </div>
+
+        {/* Resize Handle */}
+        <div
+          onMouseDown={handleResizeStart}
+          style={{
+            width: '4px',
+            cursor: 'col-resize',
+            background: 'transparent',
+            transition: 'background 0.2s',
+            flexShrink: 0,
+          }}
+        />
 
         {/* Center: Video Player */}
         <div
@@ -343,11 +431,32 @@ export default function ResultPage() {
               controls
               onTimeUpdate={handleTimeUpdate}
               onLoadedMetadata={handleLoadedMetadata}
+              onPlay={startRaf}
+              onPause={stopRaf}
+              onEnded={stopRaf}
+              onFocus={(e) => e.currentTarget.blur()}
               style={{
                 width: '100%',
                 borderRadius: '8px',
                 display: 'block',
                 maxHeight: '70vh',
+              }}
+            />
+
+            {/* Click overlay: 더블클릭 감지 대기 없이 즉시 재생/일시정지 */}
+            <div
+              onClick={() => {
+                if (!videoRef.current) return;
+                videoRef.current.paused ? videoRef.current.play() : videoRef.current.pause();
+              }}
+style={{
+                position: 'absolute',
+                top: '16px',
+                left: '16px',
+                right: '16px',
+                bottom: '56px', // 컨트롤바 높이 제외
+                cursor: 'pointer',
+                zIndex: 1,
               }}
             />
 
@@ -361,6 +470,7 @@ export default function ResultPage() {
                   transform: 'translateX(-50%)',
                   textAlign: 'center',
                   pointerEvents: 'none',
+                  zIndex: 2,
                   width: '85%',
                   maxWidth: '700px',
                 }}
@@ -416,6 +526,7 @@ export default function ResultPage() {
         durationMs={videoDuration}
         currentTimeMs={currentTimeMs}
         onSeek={handleSeek}
+        videoRef={videoRef}
       />
 
       {/* Subtitle Settings Panel */}

@@ -49,8 +49,11 @@ export const authApi = {
   register: (token: string, nickname?: string) =>
     axios.post<ApiResponse<RegisterResponse>>(
       `${BASE_URL}/api/auth/register`,
-      { nickname: nickname ?? null },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { nickname: nickname || '' },
+      { headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      } }
     ),
 };
 
