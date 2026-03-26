@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "Koreański",
+    "en": "Angielski",
+    "ja": "Japoński",
+    "zh": "Chiński (uproszczony)",
+    "es": "Hiszpański",
+    "fr": "Francuski",
+    "de": "Niemiecki",
+    "pt": "Portugalski",
+    "ar": "Arabski",
+    "da": "Duński",
+    "fi": "Fiński",
+    "it": "Włoski",
+    "nl": "Holenderski",
+    "pl": "Polski",
+    "sv": "Szwedzki",
+    "tr": "Turecki"
+  },
+  "theme": {
+    "toDark": "Przełącz na tryb ciemny",
+    "toLight": "Przełącz na tryb jasny"
+  },
+  "sidebar": {
+    "dashboard": "Panel",
+    "myVideos": "Moje filmy",
+    "credits": "Kredyty",
+    "settings": "Ustawienia",
+    "signOut": "Wyloguj się",
+    "uiLanguage": "Język interfejsu"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "Prześlij wideo, aby automatycznie wygenerować napisy",
+    "balance": "Saldo: {{count}} min",
+    "dragDrop": "Przeciągnij i upuść",
+    "uploadHint": "Prześlij pliki wideo MP4, MOV, AVI",
+    "uploadConstraints": "Maks. rozmiar pliku: 100 MB · Maks. czas trwania: 5 minut",
+    "browseFiles": "Przeglądaj pliki",
+    "uploading": "Przesyłanie...",
+    "requiredCredits": "Wymagane kredyty",
+    "currentBalance": "Aktualne saldo",
+    "targetLanguage": "Język tłumaczenia",
+    "change": "Zmień",
+    "insufficientCredits": "Niewystarczające kredyty. Potrzebujesz jeszcze {{count}} minut.",
+    "chargeCredits": "Doładuj kredyty",
+    "startTranslation": "Rozpocznij tłumaczenie",
+    "requestingTranslation": "Żądanie tłumaczenia...",
+    "minutes": "{{count}} min",
+    "processingProgress": "Postęp przetwarzania",
+    "steps": {
+      "audioExtract": "Ekstrakcja audio",
+      "stt": "STT (Whisper)",
+      "translate": "Tłumaczenie",
+      "srtBuild": "Generowanie SRT"
+    },
+    "errors": {
+      "fileTooLarge": "Plik przekracza 100 MB.",
+      "videoTooLong": "Wideo przekracza 5 minut.",
+      "unsupportedFormat": "Nieobsługiwany format pliku.",
+      "uploadFailed": "Przesyłanie nie powiodło się.",
+      "translateFailed": "Żądanie tłumaczenia nie powiodło się."
+    }
+  },
+  "processing": {
+    "title": "Przetwarzanie",
+    "job": "Zadanie #{{id}}",
+    "waitingInQueue": "OCZEKIWANIE W KOLEJCE...",
+    "queuePosition": "Pozycja w kolejce",
+    "estimatedWait": "Szacowany czas oczekiwania: {{time}}",
+    "closeWindowWarningQueue": "Zamknięcie okna może spowodować utratę miejsca w kolejce.",
+    "processingTitle": "Przetwarzanie...",
+    "overallProgress": "Ogólny postęp",
+    "closeWindowWarning": "Nie zamykaj okna, dopóki przetwarzanie nie zostanie zakończone.",
+    "completed": "Ukończono!",
+    "redirecting": "Przekierowanie do wyników...",
+    "failed": "Przetwarzanie nie powiodło się",
+    "failedError": "Wystąpił błąd podczas przetwarzania.",
+    "backToDashboard": "Powrót do panelu",
+    "processingProgress": "Postęp przetwarzania",
+    "waitingStatus": "Oczekiwanie w kolejce",
+    "analysisStatus": "Analiza i transkrypcja"
+  },
+  "auth": {
+    "signInTitle": "Zaloguj się do Bako",
+    "signUpTitle": "Utwórz konto",
+    "withGoogle": "Kontynuuj z Google",
+    "withApple": "Kontynuuj z Apple",
+    "signUpWithGoogle": "Zarejestruj się z Google",
+    "signUpWithApple": "Zarejestruj się z Apple",
+    "processing": "Przetwarzanie...",
+    "emailLabel": "Adres e-mail",
+    "passwordLabel": "Hasło",
+    "nicknameLabel": "Pseudonim",
+    "nicknamePlaceholder": "Twoja nazwa wyświetlana",
+    "confirmPasswordLabel": "Potwierdź hasło",
+    "signInBtn": "Zaloguj się",
+    "signingIn": "Logowanie...",
+    "signUpBtn": "Zarejestruj się",
+    "creatingAccount": "Tworzenie konta...",
+    "newUser": "Nowy w Bako?",
+    "createAccount": "Utwórz konto",
+    "haveAccount": "Masz już konto?",
+    "signIn": "Zaloguj się",
+    "errors": {
+      "invalidCredential": "Nieprawidłowy e-mail lub hasło.",
+      "blocked": "To konto zostało zablokowane.",
+      "tooManyRequests": "Zbyt wiele prób logowania. Spróbuj ponownie później.",
+      "googleFailed": "Logowanie przez Google nie powiodło się.",
+      "appleFailed": "Logowanie przez Apple nie powiodło się.",
+      "passwordMismatch": "Hasła nie są zgodne.",
+      "emailInUse": "Ten adres e-mail jest już używany.",
+      "weakPassword": "Hasło musi mieć co najmniej 6 znaków.",
+      "invalidEmail": "Nieprawidłowy adres e-mail.",
+      "signupFailed": "Rejestracja nie powiodła się.",
+      "loginFailed": "Logowanie nie powiodło się."
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "Zaloguj się",
+      "getStarted": "Zacznij za darmo"
+    },
+    "hero": {
+      "badge": "✦ Automatyczne generowanie napisów AI",
+      "title": "Prześlij swoje wideo,",
+      "titleAccent": "napisy są gotowe",
+      "desc": "Bez skomplikowanych operacji, wystarczy przesłać plik wideo, a wysokiej jakości pliki napisów SRT są generowane automatycznie.",
+      "cta": "Zacznij za darmo →",
+      "login": "Zaloguj się",
+      "mockDrag": "Przeciągnij tutaj plik wideo",
+      "mockHint": "MP4 · MOV · AVI · Maks. 100 MB",
+      "mockStep1": "Ekstrakcja audio",
+      "mockStep2": "Rozpoznawanie mowy",
+      "mockStep3": "Tłumaczenie",
+      "mockStep4": "Generowanie SRT",
+      "mockDone": "gotowe",
+      "mockProcessing": "przetwarzanie",
+      "mockPending": "oczekiwanie"
+    },
+    "howItWorks": {
+      "label": "Jak to działa",
+      "title": "Generowanie napisów w 3 krokach"
+    },
+    "steps": [
+      { "title": "Prześlij wideo", "desc": "Przeciągnij i upuść lub kliknij, aby przesłać pliki MP4, MOV, AVI." },
+      { "title": "Przetwarzanie AI", "desc": "Automatycznie rozpoznaje mowę i konwertuje ją na precyzyjny tekst napisów." },
+      { "title": "Pobierz SRT", "desc": "Natychmiast pobierz gotowy plik napisów w formacie SRT." }
+    ],
+    "features": {
+      "label": "Funkcje",
+      "title": "Dlaczego wybrać Bako?"
+    },
+    "featureItems": [
+      { "title": "Szybkie przetwarzanie", "desc": "Przetwarzanie rozpoczyna się natychmiast po przesłaniu, aby szybko uzyskać wyniki." },
+      { "title": "Wysoka dokładność", "desc": "Dokładnie rozpoznaje różne języki i akcenty, aby generować naturalne napisy." },
+      { "title": "Standardowy format SRT", "desc": "W pełni kompatybilny ze wszystkimi narzędziami do edycji wideo, w tym Premiere, DaVinci i Final Cut Pro." },
+      { "title": "Rozliczanie kredytowe", "desc": "Odliczane tylko za długość użytego wideo. Używaj elastycznie w oparciu o zużycie, a nie subskrypcję." },
+      { "title": "Obsługa wielu formatów", "desc": "Obsługuje główne formaty wideo, w tym MP4, MOV i AVI. Do 100 MB / 5 minut." },
+      { "title": "Historia pracy", "desc": "Pobierz przetworzone listy wideo i pliki SRT w dowolnym czasie." }
+    ],
+    "pricing": {
+      "label": "Cennik",
+      "title": "Płać tylko za to, czego używasz",
+      "desc": "Brak subskrypcji. Doładuj kredyty i używaj ich, gdy potrzebujesz.",
+      "popular": "POPULARNY",
+      "creditUnit": " min kredytów",
+      "buy": "Zacznij",
+      "planFeatures": [
+        ["10 min kredytów", "Wszystkie podstawowe funkcje", "Oryginalne + przetłumaczone napisy"],
+        ["30 min kredytów", "Wszystkie funkcje", "Priorytetowe przetwarzanie"],
+        ["60 min kredytów", "Wszystkie funkcje", "Priorytetowe przetwarzanie", "Szybkie przetwarzanie"],
+        ["180 min kredytów", "Wszystkie funkcje", "Najwyższy priorytet przetwarzania", "Duże pliki"],
+        ["600 min kredytów", "Wszystkie funkcje w zestawie", "Najwyższy priorytet przetwarzania", "Dedykowane wsparcie"]
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Często zadawane pytania"
+    },
+    "faqItems": [
+      { "q": "Jakie języki są obsługiwane?", "a": "Obsługuje obecnie rozpoznawanie mowy i tłumaczenie w różnych językach, w tym koreańskim, angielskim, japońskim, chińskim, hiszpańskim, francuskim, niemieckim i portugalskim." },
+      { "q": "Czy istnieje limit rozmiaru pliku?", "a": "Do 100 MB i maksymalna długość wideo 5 minut. Podziel większe pliki przed przesłaniem." },
+      { "q": "Czy obsługujecie inne formaty napisów niż SRT?", "a": "Obecnie obsługiwany jest tylko format SRT. Planujemy dodać więcej formatów, takich jak VTT i ASS w przyszłości." },
+      { "q": "Jak doładować kredyty?", "a": "Po zalogowaniu przejdź do strony Kredyty, aby wybrać i zakupić preferowany pakiet." },
+      { "q": "Co jeśli nie jestem zadowolony z tłumaczenia?", "a": "Możesz otworzyć pobrany plik SRT w edytorze tekstu i edytować go bezpośrednio. Plik napisów jest w formacie zwykłego tekstu." }
+    ],
+    "cta": {
+      "title": "Doświadcz",
+      "titleAccent": "automatyzacji napisów teraz",
+      "desc": "Wszystko czego potrzebujesz to wideo. Bako zajmuje się resztą.",
+      "button": "Zacznij za darmo →"
+    },
+    "footer": {
+      "tagline": "Automatyzacja napisów AI",
+      "signin": "Zaloguj się",
+      "signup": "Zarejestruj się",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

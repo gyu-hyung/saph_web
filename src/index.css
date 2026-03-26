@@ -12,19 +12,65 @@
   --text-secondary: rgba(255, 255, 255, 0.6);
   --text-muted: rgba(255, 255, 255, 0.3);
   --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.25);
   --border-accent: rgba(124, 58, 237, 0.5);
   --success: #10b981;
   --warning: #f59e0b;
   --error: #ef4444;
   --info: #3b82f6;
   --sidebar-width: 240px;
+  --surface: #1a1a2e;
+  --bg-secondary: #1a1a2e;
+
+  /* Landing page specific */
+  --navbar-bg: rgba(13, 13, 26, 0.7);
+  --bg-card-subtle: rgba(255, 255, 255, 0.03);
+  --bg-section-alt: rgba(255, 255, 255, 0.015);
+  --bg-button-ghost: rgba(255, 255, 255, 0.08);
+  --bg-button-ghost-hover: rgba(255, 255, 255, 0.13);
+  --bg-hero-card: rgba(255, 255, 255, 0.04);
+  --bg-faq-answer: rgba(255, 255, 255, 0.02);
+  --text-ghost: rgba(255, 255, 255, 0.04);
+  --shadow-card: 0 32px 64px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f5f4ff;
+  --bg-secondary: #ede9fd;
+  --bg-card: rgba(0, 0, 0, 0.04);
+  --bg-input: rgba(0, 0, 0, 0.06);
+  --accent-light: rgba(124, 58, 237, 0.12);
+  --text-primary: #0d0d1a;
+  --text-secondary: rgba(13, 13, 26, 0.6);
+  --text-muted: rgba(13, 13, 26, 0.38);
+  --border: rgba(0, 0, 0, 0.1);
+  --border-hover: rgba(0, 0, 0, 0.25);
+  --border-accent: rgba(124, 58, 237, 0.4);
+
+  --surface: #ffffff;
+  --bg-secondary: #ede9fd;
+  --navbar-bg: rgba(245, 244, 255, 0.85);
+  --bg-card-subtle: rgba(0, 0, 0, 0.025);
+  --bg-section-alt: rgba(0, 0, 0, 0.02);
+  --bg-button-ghost: rgba(0, 0, 0, 0.06);
+  --bg-button-ghost-hover: rgba(0, 0, 0, 0.1);
+  --bg-hero-card: rgba(255, 255, 255, 0.75);
+  --bg-faq-answer: rgba(0, 0, 0, 0.015);
+  --text-ghost: rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 32px 64px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
 
 html,
 body {
@@ -71,12 +117,12 @@ select {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(128, 128, 128, 0.3);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(128, 128, 128, 0.5);
 }
 
 /* Animations */

@@ -1,10 +1,12 @@
 import { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { videoApi } from '../api/client';
 import { useAuth } from '../store/authStore';
 import CreditModal from '../components/CreditModal';
 import type { UploadResult } from '../types';
+import { SUPPORTED_TARGET_LANGUAGES } from '../i18n/languages';
 
 type UploadState = 'idle' | 'uploading' | 'uploaded' | 'insufficient_credits' | 'translating';
 
@@ -16,13 +18,6 @@ interface ProcessingStep {
   sublabel: string;
   status: StepStatus;
 }
-
-const initialSteps: ProcessingStep[] = [
-  { id: 'audio', label: 'Audio Extraction', sublabel: 'FFmpeg', status: 'pending' },
-  { id: 'stt', label: 'STT (Whisper)', sublabel: 'faster-whisper', status: 'pending' },
-  { id: 'translate', label: 'Translation (Gemma 3)', sublabel: 'Ollama', status: 'pending' },
-  { id: 'srt', label: 'SRT Generation', sublabel: 'Build output', status: 'pending' },
-];
 
 function UploadIcon() {
   return (
@@ -60,16 +55,25 @@ const statusBadgeBg: Record<StepStatus, string> = {
 };
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
   const [uploadState, setUploadState] = useState<UploadState>('idle');
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
-  const [steps, setSteps] = useState<ProcessingStep[]>(initialSteps);
+  const [targetLang, setTargetLang] = useState('ko');
   const [showCreditModal, setShowCreditModal] = useState(false);
   const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { member, refreshMember } = useAuth();
   const navigate = useNavigate();
+
+  const initialSteps: ProcessingStep[] = [
+    { id: 'audio', label: t('dashboard.steps.audioExtract'), sublabel: 'FFmpeg', status: 'pending' },
+    { id: 'stt', label: t('dashboard.steps.stt'), sublabel: 'faster-whisper', status: 'pending' },
+    { id: 'translate', label: t('dashboard.steps.translate'), sublabel: 'Ollama', status: 'pending' },
+    { id: 'srt', label: t('dashboard.steps.srtBuild'), sublabel: 'Build output', status: 'pending' },
+  ];
+  const [steps, setSteps] = useState<ProcessingStep[]>(initialSteps);
 
   const validateFile = (file: File): string | null => {
     const allowedTypes = ['video/mp4', 'video/quicktime', 'video/avi', 'video/x-msvideo'];
@@ -77,12 +81,12 @@ export default function DashboardPage() {
     const ext = '.' + file.name.split('.').pop()?.toLowerCase();
 
     if (!allowedTypes.includes(file.type) && !allowedExts.includes(ext)) {
-      return 'MP4, MOV, AVI 형식의 파일만 지원합니다.';
+      return t('dashboard.errors.unsupportedFormat');
     }
 
     const maxMB = 100;
     if (file.size > maxMB * 1024 * 1024) {
-      return `파일 크기는 ${maxMB}MB를 초과할 수 없습니다.`;
+      return t('dashboard.errors.fileTooLarge');
     }
 
     return null;
@@ -120,13 +124,14 @@ export default function DashboardPage() {
       } catch (err: unknown) {
         const axiosError = err as { response?: { data?: { message?: string; code?: string } } };
         const code = axiosError.response?.data?.code;
-        if (code === 'FILE_TOO_LARGE') setError('파일이 100MB를 초과합니다.');
-        else if (code === 'VIDEO_TOO_LONG') setError('영상이 5분을 초과합니다.');
-        else if (code === 'UNSUPPORTED_FORMAT') setError('지원하지 않는 파일 형식입니다.');
-        else setError(axiosError.response?.data?.message || '업로드에 실패했습니다.');
+        if (code === 'FILE_TOO_LARGE') setError(t('dashboard.errors.fileTooLarge'));
+        else if (code === 'VIDEO_TOO_LONG') setError(t('dashboard.errors.videoTooLong'));
+        else if (code === 'UNSUPPORTED_FORMAT') setError(t('dashboard.errors.unsupportedFormat'));
+        else setError(axiosError.response?.data?.message || t('dashboard.errors.uploadFailed'));
         setUploadState('idle');
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [member]
   );
 
@@ -156,7 +161,7 @@ export default function DashboardPage() {
     if (!uploadResult) return;
     setUploadState('translating');
     try {
-      const response = await videoApi.translate(uploadResult.videoId);
+      const response = await videoApi.translate(uploadResult.videoId, 'auto', targetLang);
       const { jobId } = response.data.data;
       navigate(`/processing/${jobId}`);
     } catch (err: unknown) {
@@ -166,7 +171,7 @@ export default function DashboardPage() {
         setUploadState('insufficient_credits');
         setShowCreditModal(true);
       } else {
-        setError(axiosError.response?.data?.message || '번역 요청에 실패했습니다.');
+        setError(axiosError.response?.data?.message || t('dashboard.errors.translateFailed'));
         setUploadState('uploaded');
       }
     }
@@ -206,9 +211,9 @@ export default function DashboardPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: 700 }}>Dashboard</h1>
+          <h1 style={{ fontSize: '22px', fontWeight: 700 }}>{t('dashboard.title')}</h1>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            Upload a video to generate subtitles automatically
+            {t('dashboard.subtitle')}
           </p>
         </div>
         {member && (
@@ -223,7 +228,7 @@ export default function DashboardPage() {
               border: '1px solid var(--border-accent)',
             }}
           >
-            Balance: {member.creditBalance} min
+            {t('dashboard.balance', { count: member.creditBalance })}
           </div>
         )}
       </div>
@@ -292,13 +297,13 @@ export default function DashboardPage() {
               </div>
               <div style={{ textAlign: 'center' }}>
                 <p style={{ fontSize: '18px', fontWeight: 600, marginBottom: '8px' }}>
-                  Drag & Drop
+                  {t('dashboard.dragDrop')}
                 </p>
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                  Upload video files containing MP4, MOV, AVI
+                  {t('dashboard.uploadHint')}
                 </p>
                 <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                  Max file size: 100MB · Max duration: 5 minutes
+                  {t('dashboard.uploadConstraints')}
                 </p>
               </div>
               <button
@@ -317,7 +322,7 @@ export default function DashboardPage() {
                   fileInputRef.current?.click();
                 }}
               >
-                Browse Files
+                {t('dashboard.browseFiles')}
               </button>
               <input
                 ref={fileInputRef}
@@ -358,7 +363,7 @@ export default function DashboardPage() {
               <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
               <div style={{ textAlign: 'center' }}>
                 <p style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
-                  Uploading...
+                  {t('dashboard.uploading')}
                 </p>
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                   {uploadProgress}%
@@ -452,41 +457,41 @@ export default function DashboardPage() {
                         cursor: 'pointer',
                       }}
                     >
-                      변경
+                      {t('dashboard.change')}
                     </button>
                   </div>
                 </div>
 
-                {/* Credit Info */}
+                {/* Credit Info + Language Selector + Action */}
                 <div style={{ padding: '20px 24px' }}>
                   <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
                     <div
                       style={{
                         flex: 1,
                         padding: '14px',
-                        background: 'rgba(255,255,255,0.03)',
+                        background: 'var(--bg-card-subtle)',
                         borderRadius: '10px',
                         border: '1px solid var(--border)',
                       }}
                     >
                       <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                        필요 크레딧
+                        {t('dashboard.requiredCredits')}
                       </p>
                       <p style={{ fontSize: '20px', fontWeight: 700 }}>
-                        {uploadResult.requiredCreditMin}분
+                        {t('dashboard.minutes', { count: uploadResult.requiredCreditMin })}
                       </p>
                     </div>
                     <div
                       style={{
                         flex: 1,
                         padding: '14px',
-                        background: 'rgba(255,255,255,0.03)',
+                        background: 'var(--bg-card-subtle)',
                         borderRadius: '10px',
                         border: '1px solid var(--border)',
                       }}
                     >
                       <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                        현재 잔액
+                        {t('dashboard.currentBalance')}
                       </p>
                       <p
                         style={{
@@ -498,8 +503,39 @@ export default function DashboardPage() {
                               : 'var(--error)',
                         }}
                       >
-                        {member?.creditBalance ?? 0}분
+                        {t('dashboard.minutes', { count: member?.creditBalance ?? 0 })}
                       </p>
+                    </div>
+                  </div>
+
+                  {/* Target Language Selector */}
+                  <div style={{ marginBottom: '16px' }}>
+                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '10px', fontWeight: 500 }}>
+                      {t('dashboard.targetLanguage')}
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
+                      {SUPPORTED_TARGET_LANGUAGES.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => setTargetLang(lang.code)}
+                          title={lang.nativeName}
+                          style={{
+                            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
+                            padding: '8px 4px',
+                            borderRadius: '8px',
+                            border: `1px solid ${targetLang === lang.code ? 'var(--accent)' : 'var(--border)'}`,
+                            background: targetLang === lang.code ? 'var(--accent-light)' : 'transparent',
+                            color: targetLang === lang.code ? 'var(--accent)' : 'var(--text-secondary)',
+                            fontSize: '10px',
+                            fontWeight: targetLang === lang.code ? 600 : 400,
+                            cursor: 'pointer',
+                            transition: 'all 0.15s',
+                          }}
+                        >
+                          <span style={{ fontSize: '18px', lineHeight: 1 }}>{lang.flag}</span>
+                          <span>{lang.label}</span>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
@@ -516,7 +552,9 @@ export default function DashboardPage() {
                           marginBottom: '14px',
                         }}
                       >
-                        크레딧이 부족합니다. {uploadResult.requiredCreditMin - (member?.creditBalance ?? 0)}분이 더 필요합니다.
+                        {t('dashboard.insufficientCredits', {
+                          count: uploadResult.requiredCreditMin - (member?.creditBalance ?? 0),
+                        })}
                       </div>
                       <button
                         onClick={() => setShowCreditModal(true)}
@@ -532,7 +570,7 @@ export default function DashboardPage() {
                           cursor: 'pointer',
                         }}
                       >
-                        크레딧 충전하기
+                        {t('dashboard.chargeCredits')}
                       </button>
                     </div>
                   ) : (
@@ -570,10 +608,10 @@ export default function DashboardPage() {
                               animation: 'spin 0.8s linear infinite',
                             }}
                           />
-                          번역 요청 중...
+                          {t('dashboard.requestingTranslation')}
                         </>
                       ) : (
-                        '번역 시작'
+                        t('dashboard.startTranslation')
                       )}
                     </button>
                   )}
@@ -596,7 +634,7 @@ export default function DashboardPage() {
           }}
         >
           <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: 'var(--text-secondary)' }}>
-            Processing Progress
+            {t('dashboard.processingProgress')}
           </h3>
 
           {steps.map((step) => (
@@ -658,9 +696,6 @@ export default function DashboardPage() {
                 }}
               />
             </div>
-            <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px' }}>
-              Analysis and Transcription
-            </p>
           </div>
         </div>
       </div>

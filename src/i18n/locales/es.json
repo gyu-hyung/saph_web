@@ -1,0 +1,189 @@
+{
+  "languages": {
+    "ko": "Coreano",
+    "en": "Inglés",
+    "ja": "Japonés",
+    "zh": "Chino (simplificado)",
+    "es": "Español",
+    "fr": "Francés",
+    "de": "Alemán",
+    "pt": "Portugués",
+    "ar": "Árabe",
+    "da": "Danés",
+    "fi": "Finlandés",
+    "it": "Italiano",
+    "nl": "Neerlandés",
+    "pl": "Polaco",
+    "sv": "Sueco",
+    "tr": "Turco"
+  },
+  "theme": {
+    "toDark": "Cambiar a modo oscuro",
+    "toLight": "Cambiar a modo claro"
+  },
+  "sidebar": {
+    "dashboard": "Panel",
+    "myVideos": "Mis videos",
+    "credits": "Créditos",
+    "settings": "Configuración",
+    "signOut": "Cerrar sesión",
+    "uiLanguage": "Idioma de la interfaz"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "Sube un video para generar subtítulos automáticamente",
+    "balance": "Saldo: {{count}} min",
+    "dragDrop": "Arrastra y suelta",
+    "uploadHint": "Sube archivos de video MP4, MOV, AVI",
+    "uploadConstraints": "Tamaño máximo: 100MB · Duración máxima: 5 minutos",
+    "browseFiles": "Seleccionar archivos",
+    "uploading": "Subiendo...",
+    "requiredCredits": "Créditos requeridos",
+    "currentBalance": "Saldo actual",
+    "targetLanguage": "Idioma de traducción",
+    "change": "Cambiar",
+    "insufficientCredits": "Créditos insuficientes. Necesitas {{count}} minutos más.",
+    "chargeCredits": "Recargar créditos",
+    "startTranslation": "Iniciar traducción",
+    "requestingTranslation": "Solicitando traducción...",
+    "minutes": "{{count}} min",
+    "processingProgress": "Progreso de procesamiento",
+    "steps": {
+      "audioExtract": "Extracción de audio",
+      "stt": "STT (Whisper)",
+      "translate": "Traducción",
+      "srtBuild": "Generación de SRT"
+    },
+    "errors": {
+      "fileTooLarge": "El archivo supera los 100MB.",
+      "videoTooLong": "El video supera los 5 minutos.",
+      "unsupportedFormat": "Formato de archivo no compatible.",
+      "uploadFailed": "Error al subir el archivo.",
+      "translateFailed": "Error en la solicitud de traducción."
+    }
+  },
+  "processing": {
+    "title": "Procesando",
+    "job": "Tarea #{{id}}",
+    "waitingInQueue": "ESPERANDO EN COLA...",
+    "queuePosition": "Posición en cola",
+    "estimatedWait": "Espera estimada: {{time}}",
+    "closeWindowWarningQueue": "Cerrar la ventana puede hacer que pierdas tu posición en la cola.",
+    "processingTitle": "Procesando...",
+    "overallProgress": "Progreso general",
+    "closeWindowWarning": "No cierres la ventana hasta que se complete el procesamiento.",
+    "completed": "¡Completado!",
+    "redirecting": "Redirigiendo a los resultados...",
+    "failed": "Procesamiento fallido",
+    "failedError": "Ocurrió un error durante el procesamiento.",
+    "backToDashboard": "Volver al panel",
+    "processingProgress": "Progreso de procesamiento",
+    "waitingStatus": "Esperando en cola",
+    "analysisStatus": "Análisis y transcripción"
+  },
+  "auth": {
+    "signInTitle": "Iniciar sesión en Bako",
+    "signUpTitle": "Crear una cuenta",
+    "withGoogle": "Continuar con Google",
+    "withApple": "Continuar con Apple",
+    "signUpWithGoogle": "Registrarse con Google",
+    "signUpWithApple": "Registrarse con Apple",
+    "processing": "Procesando...",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "nicknameLabel": "Apodo",
+    "nicknamePlaceholder": "Tu nombre de pantalla",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "signInBtn": "Iniciar sesión",
+    "signingIn": "Iniciando sesión...",
+    "signUpBtn": "Registrarse",
+    "creatingAccount": "Creando cuenta...",
+    "newUser": "¿Nuevo en Bako?",
+    "createAccount": "Crear una cuenta",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
+    "errors": {
+      "invalidCredential": "Correo electrónico o contraseña incorrectos.",
+      "blocked": "Esta cuenta ha sido bloqueada.",
+      "tooManyRequests": "Demasiados intentos de inicio de sesión. Inténtalo más tarde.",
+      "googleFailed": "Error al iniciar sesión con Google.",
+      "appleFailed": "Error al iniciar sesión con Apple.",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "emailInUse": "Este correo electrónico ya está en uso.",
+      "weakPassword": "La contraseña debe tener al menos 6 caracteres.",
+      "invalidEmail": "Dirección de correo electrónico no válida.",
+      "signupFailed": "Error al registrarse.",
+      "loginFailed": "Error al iniciar sesión."
+    }
+  },
+  "landing": {
+    "nav": { "signin": "Iniciar sesión", "getStarted": "Comenzar gratis" },
+    "hero": {
+      "badge": "✦ Servicio de generación automática de subtítulos con IA",
+      "title": "Sube tu video,",
+      "titleAccent": "los subtítulos están listos",
+      "desc": "Sin operaciones complejas, solo sube tu archivo de video y se generan automáticamente archivos de subtítulos SRT de alta calidad.",
+      "cta": "Comenzar gratis →",
+      "login": "Iniciar sesión",
+      "mockDrag": "Arrastra tu archivo de video aquí",
+      "mockHint": "MP4 · MOV · AVI · Máx 100MB",
+      "mockStep1": "Extracción de audio",
+      "mockStep2": "Reconocimiento de voz",
+      "mockStep3": "Traducción",
+      "mockStep4": "Generación de SRT",
+      "mockDone": "listo",
+      "mockProcessing": "procesando",
+      "mockPending": "pendiente"
+    },
+    "howItWorks": { "label": "Cómo funciona", "title": "Generación de subtítulos en 3 pasos" },
+    "steps": [
+      { "title": "Subir video", "desc": "Arrastra y suelta o haz clic para subir archivos MP4, MOV, AVI." },
+      { "title": "Procesamiento con IA", "desc": "Reconoce automáticamente el habla y la convierte en texto de subtítulos preciso." },
+      { "title": "Descargar SRT", "desc": "Descarga al instante el archivo de subtítulos completado en formato SRT." }
+    ],
+    "features": { "label": "Características", "title": "¿Por qué elegir Bako?" },
+    "featureItems": [
+      { "title": "Procesamiento rápido", "desc": "El procesamiento comienza inmediatamente después de subir, para que obtengas resultados rápidamente." },
+      { "title": "Alta precisión", "desc": "Reconoce con precisión varios idiomas y acentos para generar subtítulos naturales." },
+      { "title": "Formato SRT estándar", "desc": "Totalmente compatible con todas las herramientas de edición de video, incluidas Premiere, DaVinci y Final Cut Pro." },
+      { "title": "Facturación por créditos", "desc": "Solo se deduce según la longitud del video utilizado. Úsalo de forma flexible según el uso, no por suscripción." },
+      { "title": "Soporte de múltiples formatos", "desc": "Admite los principales formatos de video, incluidos MP4, MOV y AVI. Hasta 100MB / 5 minutos." },
+      { "title": "Historial de trabajos", "desc": "Descarga listas de videos procesados y archivos SRT en cualquier momento." }
+    ],
+    "pricing": {
+      "label": "Precios",
+      "title": "Paga solo lo que usas",
+      "desc": "Sin suscripción. Carga créditos y úsalos cuando los necesites.",
+      "popular": "POPULAR",
+      "creditUnit": " min de créditos",
+      "buy": "Comenzar",
+      "planFeatures": [
+        ["10 min de créditos", "Todas las funciones básicas", "Subtítulos original + traducido"],
+        ["30 min de créditos", "Todas las funciones", "Procesamiento prioritario"],
+        ["60 min de créditos", "Todas las funciones", "Procesamiento prioritario", "Procesamiento rápido"],
+        ["180 min de créditos", "Todas las funciones", "Procesamiento de máxima prioridad", "Archivos grandes"],
+        ["600 min de créditos", "Todas las funciones incluidas", "Procesamiento de máxima prioridad", "Soporte dedicado"]
+      ]
+    },
+    "faq": { "label": "FAQ", "title": "Preguntas frecuentes" },
+    "faqItems": [
+      { "q": "¿Qué idiomas son compatibles?", "a": "Actualmente admite reconocimiento de voz y traducción en varios idiomas, incluidos coreano, inglés, japonés, chino, español, francés, alemán y portugués." },
+      { "q": "¿Hay un límite de tamaño de archivo?", "a": "Hasta 100MB y una duración máxima de video de 5 minutos. Divide los archivos más grandes antes de subirlos." },
+      { "q": "¿Admite formatos de subtítulos distintos al SRT?", "a": "Actualmente solo se admite el formato SRT. Planeamos agregar más formatos como VTT y ASS en el futuro." },
+      { "q": "¿Cómo cargo créditos?", "a": "Después de iniciar sesión, ve a la página de Créditos para seleccionar y comprar tu paquete preferido." },
+      { "q": "¿Qué pasa si no estoy satisfecho con la traducción?", "a": "Puedes abrir el archivo SRT descargado en un editor de texto y editarlo directamente. El archivo de subtítulos está en formato de texto plano." }
+    ],
+    "cta": {
+      "title": "Experimenta",
+      "titleAccent": "la automatización de subtítulos ahora",
+      "desc": "Todo lo que necesitas es un video. Bako se encarga del resto.",
+      "button": "Comenzar gratis →"
+    },
+    "footer": {
+      "tagline": "Automatización de subtítulos con IA",
+      "signin": "Iniciar sesión",
+      "signup": "Registrarse",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

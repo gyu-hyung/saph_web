@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { AuthProvider } from './store/authStore'
+import { useTheme } from './hooks/useTheme'
 import AppLayout from './components/layout/AppLayout'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -10,6 +11,11 @@ import ProcessingPage from './pages/ProcessingPage'
 import ResultPage from './pages/ResultPage'
 import MyVideosPage from './pages/MyVideosPage'
 import CreditsPage from './pages/CreditsPage'
+
+function ThemeProvider({ children }: { children: React.ReactNode }) {
+  useTheme(); // ensures data-theme is always initialized from localStorage on every route
+  return <>{children}</>;
+}
 
 function AppRoutes() {
   const location = useLocation();
@@ -37,7 +43,9 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <AppRoutes />
+        <ThemeProvider>
+          <AppRoutes />
+        </ThemeProvider>
       </BrowserRouter>
     </AuthProvider>
   )

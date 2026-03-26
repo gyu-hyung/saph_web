@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "韩语",
+    "en": "英语",
+    "ja": "日语",
+    "zh": "中文(简体)",
+    "es": "西班牙语",
+    "fr": "法语",
+    "de": "德语",
+    "pt": "葡萄牙语",
+    "ar": "阿拉伯语",
+    "da": "丹麦语",
+    "fi": "芬兰语",
+    "it": "意大利语",
+    "nl": "荷兰语",
+    "pl": "波兰语",
+    "sv": "瑞典语",
+    "tr": "土耳其语"
+  },
+  "theme": {
+    "toDark": "切换到深色模式",
+    "toLight": "切换到浅色模式"
+  },
+  "sidebar": {
+    "dashboard": "仪表板",
+    "myVideos": "我的视频",
+    "credits": "积分",
+    "settings": "设置",
+    "signOut": "退出登录",
+    "uiLanguage": "界面语言"
+  },
+  "dashboard": {
+    "title": "仪表板",
+    "subtitle": "上传视频以自动生成字幕",
+    "balance": "余额: {{count}}分钟",
+    "dragDrop": "拖放上传",
+    "uploadHint": "上传 MP4、MOV、AVI 视频文件",
+    "uploadConstraints": "最大文件大小: 100MB · 最长时长: 5分钟",
+    "browseFiles": "选择文件",
+    "uploading": "上传中...",
+    "requiredCredits": "所需积分",
+    "currentBalance": "当前余额",
+    "targetLanguage": "翻译语言",
+    "change": "更改",
+    "insufficientCredits": "积分不足。还需要 {{count}} 分钟的积分。",
+    "chargeCredits": "充值积分",
+    "startTranslation": "开始翻译",
+    "requestingTranslation": "请求翻译中...",
+    "minutes": "{{count}}分钟",
+    "processingProgress": "处理进度",
+    "steps": {
+      "audioExtract": "音频提取",
+      "stt": "语音识别 (Whisper)",
+      "translate": "翻译",
+      "srtBuild": "SRT生成"
+    },
+    "errors": {
+      "fileTooLarge": "文件超过100MB。",
+      "videoTooLong": "视频超过5分钟。",
+      "unsupportedFormat": "不支持的文件格式。",
+      "uploadFailed": "上传失败。",
+      "translateFailed": "翻译请求失败。"
+    }
+  },
+  "processing": {
+    "title": "处理中",
+    "job": "任务 #{{id}}",
+    "waitingInQueue": "排队等待中...",
+    "queuePosition": "队列位置",
+    "estimatedWait": "预计等待时间: {{time}}",
+    "closeWindowWarningQueue": "关闭窗口可能会失去您的队列位置。",
+    "processingTitle": "处理中...",
+    "overallProgress": "整体进度",
+    "closeWindowWarning": "请在处理完成之前不要关闭窗口。",
+    "completed": "完成！",
+    "redirecting": "正在跳转到结果页面...",
+    "failed": "处理失败",
+    "failedError": "处理过程中发生错误。",
+    "backToDashboard": "返回仪表板",
+    "processingProgress": "处理进度",
+    "waitingStatus": "排队等待中",
+    "analysisStatus": "分析与转录"
+  },
+  "auth": {
+    "signInTitle": "登录 Bako",
+    "signUpTitle": "创建账户",
+    "withGoogle": "通过 Google 继续",
+    "withApple": "通过 Apple 继续",
+    "signUpWithGoogle": "通过 Google 注册",
+    "signUpWithApple": "通过 Apple 注册",
+    "processing": "处理中...",
+    "emailLabel": "电子邮件地址",
+    "passwordLabel": "密码",
+    "nicknameLabel": "昵称",
+    "nicknamePlaceholder": "显示名称",
+    "confirmPasswordLabel": "确认密码",
+    "signInBtn": "登录",
+    "signingIn": "登录中...",
+    "signUpBtn": "注册",
+    "creatingAccount": "创建账户中...",
+    "newUser": "还没有账户？",
+    "createAccount": "创建账户",
+    "haveAccount": "已有账户？",
+    "signIn": "登录",
+    "errors": {
+      "invalidCredential": "电子邮件或密码不正确。",
+      "blocked": "该账户已被封锁。",
+      "tooManyRequests": "登录尝试次数过多，请稍后再试。",
+      "googleFailed": "Google 登录失败。",
+      "appleFailed": "Apple 登录失败。",
+      "passwordMismatch": "密码不匹配。",
+      "emailInUse": "该电子邮件已被使用。",
+      "weakPassword": "密码长度必须至少为6个字符。",
+      "invalidEmail": "无效的电子邮件地址。",
+      "signupFailed": "注册失败。",
+      "loginFailed": "登录失败。"
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "登录",
+      "getStarted": "免费开始"
+    },
+    "hero": {
+      "badge": "✦ AI字幕自动生成服务",
+      "title": "上传您的视频，",
+      "titleAccent": "字幕即刻生成",
+      "desc": "无需复杂操作，只需上传视频文件，即可自动生成高质量SRT字幕文件。",
+      "cta": "免费开始 →",
+      "login": "登录",
+      "mockDrag": "将视频文件拖放至此",
+      "mockHint": "MP4 · MOV · AVI · 最大100MB",
+      "mockStep1": "音频提取",
+      "mockStep2": "语音识别",
+      "mockStep3": "翻译",
+      "mockStep4": "SRT生成",
+      "mockDone": "完成",
+      "mockProcessing": "处理中",
+      "mockPending": "等待中"
+    },
+    "howItWorks": {
+      "label": "How it works",
+      "title": "3步完成字幕生成"
+    },
+    "steps": [
+      { "title": "上传视频", "desc": "拖放或点击上传MP4、MOV、AVI文件。" },
+      { "title": "AI自动处理", "desc": "自动识别语音并转换为精准的字幕文本。" },
+      { "title": "下载SRT", "desc": "立即以SRT格式下载完成的字幕文件。" }
+    ],
+    "features": {
+      "label": "Features",
+      "title": "为什么选择 Bako？"
+    },
+    "featureItems": [
+      { "title": "快速处理", "desc": "上传后立即开始自动处理，短时间内获取结果。" },
+      { "title": "高精度", "desc": "精确识别各种语言和口音，生成自然的字幕。" },
+      { "title": "标准SRT格式", "desc": "与Premiere、DaVinci、Final Cut Pro等所有视频编辑工具完全兼容。" },
+      { "title": "积分计费", "desc": "只按使用的视频时长扣除积分，灵活按使用量计费，无需订阅。" },
+      { "title": "多格式支持", "desc": "支持MP4、MOV、AVI等主要视频格式，最大100MB/5分钟。" },
+      { "title": "作业历史管理", "desc": "随时下载已处理视频列表和SRT文件。" }
+    ],
+    "pricing": {
+      "label": "Pricing",
+      "title": "只为使用量付费",
+      "desc": "无需订阅。充值积分，按需使用。",
+      "popular": "热门",
+      "creditUnit": "分钟积分",
+      "buy": "开始",
+      "planFeatures": [
+        ["10分钟积分", "所有基础功能", "原文+翻译字幕"],
+        ["30分钟积分", "所有功能", "优先处理"],
+        ["60分钟积分", "所有功能", "优先处理", "快速处理"],
+        ["180分钟积分", "所有功能", "最高优先处理", "大文件支持"],
+        ["600分钟积分", "包含所有功能", "最高优先处理", "专属支持"]
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "常见问题"
+    },
+    "faqItems": [
+      { "q": "支持哪些语言？", "a": "目前支持韩语、英语、日语、中文、西班牙语、法语、德语、葡萄牙语等多种语言的语音识别和翻译。" },
+      { "q": "有文件大小限制吗？", "a": "最大支持100MB，视频时长最长5分钟。请将较大的文件分割后上传。" },
+      { "q": "是否支持SRT以外的字幕格式？", "a": "目前仅支持SRT格式，未来将添加VTT、ASS等更多格式。" },
+      { "q": "如何充值积分？", "a": "登录后，在积分页面选择所需套餐进行购买。" },
+      { "q": "如果对翻译结果不满意怎么办？", "a": "可以用文本编辑器打开下载的SRT文件直接编辑，字幕文件是纯文本格式。" }
+    ],
+    "cta": {
+      "title": "立即体验",
+      "titleAccent": "字幕自动化",
+      "desc": "只需准备视频，其余交给 Bako。",
+      "button": "免费开始 →"
+    },
+    "footer": {
+      "tagline": "AI字幕自动化服务",
+      "signin": "登录",
+      "signup": "注册",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

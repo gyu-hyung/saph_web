@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "Korean",
+    "en": "English",
+    "ja": "Japanese",
+    "zh": "Chinese (Simplified)",
+    "es": "Spanish",
+    "fr": "French",
+    "de": "German",
+    "pt": "Portuguese",
+    "ar": "Arabic",
+    "da": "Danish",
+    "fi": "Finnish",
+    "it": "Italian",
+    "nl": "Dutch",
+    "pl": "Polish",
+    "sv": "Swedish",
+    "tr": "Turkish"
+  },
+  "theme": {
+    "toDark": "Switch to Dark Mode",
+    "toLight": "Switch to Light Mode"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "myVideos": "My Videos",
+    "credits": "Credits",
+    "settings": "Settings",
+    "signOut": "Sign out",
+    "uiLanguage": "UI Language"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Upload a video to generate subtitles automatically",
+    "balance": "Balance: {{count}} min",
+    "dragDrop": "Drag & Drop",
+    "uploadHint": "Upload video files containing MP4, MOV, AVI",
+    "uploadConstraints": "Max file size: 100MB · Max duration: 5 minutes",
+    "browseFiles": "Browse Files",
+    "uploading": "Uploading...",
+    "requiredCredits": "Required Credits",
+    "currentBalance": "Current Balance",
+    "targetLanguage": "Target Language",
+    "change": "Change",
+    "insufficientCredits": "Insufficient credits. You need {{count}} more minutes.",
+    "chargeCredits": "Charge Credits",
+    "startTranslation": "Start Translation",
+    "requestingTranslation": "Requesting Translation...",
+    "minutes": "{{count}} min",
+    "processingProgress": "Processing Progress",
+    "steps": {
+      "audioExtract": "Audio Extraction",
+      "stt": "STT (Whisper)",
+      "translate": "Translation",
+      "srtBuild": "SRT Generation"
+    },
+    "errors": {
+      "fileTooLarge": "File size exceeds 100MB.",
+      "videoTooLong": "Video exceeds 5 minutes.",
+      "unsupportedFormat": "Unsupported file format.",
+      "uploadFailed": "Upload failed.",
+      "translateFailed": "Translation request failed."
+    }
+  },
+  "processing": {
+    "title": "Processing",
+    "job": "Job #{{id}}",
+    "waitingInQueue": "WAITING IN QUEUE...",
+    "queuePosition": "Queue Position",
+    "estimatedWait": "Est. Wait: {{time}}",
+    "closeWindowWarningQueue": "Closing the window may lose your queue position.",
+    "processingTitle": "Processing...",
+    "overallProgress": "Overall Progress",
+    "closeWindowWarning": "Please don't close the window until processing completes.",
+    "completed": "Complete!",
+    "redirecting": "Redirecting to results...",
+    "failed": "Processing Failed",
+    "failedError": "An error occurred during processing.",
+    "backToDashboard": "Back to Dashboard",
+    "processingProgress": "Processing Progress",
+    "waitingStatus": "Waiting in queue",
+    "analysisStatus": "Analysis and Transcription"
+  },
+  "auth": {
+    "signInTitle": "Sign in to Bako",
+    "signUpTitle": "Create your account",
+    "withGoogle": "Continue with Google",
+    "withApple": "Continue with Apple",
+    "signUpWithGoogle": "Sign up with Google",
+    "signUpWithApple": "Sign up with Apple",
+    "processing": "Processing...",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "nicknameLabel": "Nickname",
+    "nicknamePlaceholder": "Your display name",
+    "confirmPasswordLabel": "Confirm Password",
+    "signInBtn": "Sign in",
+    "signingIn": "Signing in...",
+    "signUpBtn": "Sign up",
+    "creatingAccount": "Creating account...",
+    "newUser": "New to Bako?",
+    "createAccount": "Create an account",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "errors": {
+      "invalidCredential": "Incorrect email or password.",
+      "blocked": "This account has been blocked.",
+      "tooManyRequests": "Too many login attempts. Please try again later.",
+      "googleFailed": "Google login failed.",
+      "appleFailed": "Apple login failed.",
+      "passwordMismatch": "Passwords do not match.",
+      "emailInUse": "This email is already in use.",
+      "weakPassword": "Password must be at least 6 characters.",
+      "invalidEmail": "Invalid email address.",
+      "signupFailed": "Sign up failed.",
+      "loginFailed": "Login failed."
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "Sign in",
+      "getStarted": "Get Started"
+    },
+    "hero": {
+      "badge": "✦ AI Subtitle Auto-generation",
+      "title": "Upload your video,",
+      "titleAccent": "subtitles are ready",
+      "desc": "Without complex operations, just upload your video file and high-quality SRT subtitle files are automatically generated.",
+      "cta": "Get Started Free →",
+      "login": "Sign in",
+      "mockDrag": "Drag your video file here",
+      "mockHint": "MP4 · MOV · AVI · Max 100MB",
+      "mockStep1": "Audio Extraction",
+      "mockStep2": "Speech Recognition",
+      "mockStep3": "Translation",
+      "mockStep4": "SRT Generation",
+      "mockDone": "done",
+      "mockProcessing": "processing",
+      "mockPending": "pending"
+    },
+    "howItWorks": {
+      "label": "How it works",
+      "title": "Subtitle generation in 3 steps"
+    },
+    "steps": [
+      { "title": "Upload Video", "desc": "Drag and drop or click to upload MP4, MOV, AVI files." },
+      { "title": "AI Processing", "desc": "Automatically recognizes speech and converts it to accurate subtitle text." },
+      { "title": "Download SRT", "desc": "Instantly download the completed subtitle file in SRT format." }
+    ],
+    "features": {
+      "label": "Features",
+      "title": "Why choose Bako?"
+    },
+    "featureItems": [
+      { "title": "Fast Processing", "desc": "Processing starts immediately after upload so you get results quickly." },
+      { "title": "High Accuracy", "desc": "Accurately recognizes various languages and accents to generate natural subtitles." },
+      { "title": "Standard SRT Format", "desc": "Fully compatible with all video editing tools including Premiere, DaVinci, and Final Cut Pro." },
+      { "title": "Credit-based Billing", "desc": "Only deducted for the length of video used. Use flexibly based on usage, not subscription." },
+      { "title": "Multiple Format Support", "desc": "Supports major video formats including MP4, MOV, and AVI. Up to 100MB / 5 minutes." },
+      { "title": "Work History", "desc": "Download processed video lists and SRT files anytime." }
+    ],
+    "pricing": {
+      "label": "Pricing",
+      "title": "Pay only for what you use",
+      "desc": "No subscription. Charge credits and use them when you need.",
+      "popular": "POPULAR",
+      "creditUnit": " min credits",
+      "buy": "Get Started",
+      "planFeatures": [
+        ["10 min credits", "All basic features", "Original + translated subtitles"],
+        ["30 min credits", "All features", "Priority processing"],
+        ["60 min credits", "All features", "Priority processing", "Fast processing"],
+        ["180 min credits", "All features", "Top priority processing", "Large files"],
+        ["600 min credits", "All features included", "Top priority processing", "Dedicated support"]
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Frequently Asked Questions"
+    },
+    "faqItems": [
+      { "q": "What languages are supported?", "a": "Currently supports speech recognition and translation in various languages including Korean, English, Japanese, Chinese, Spanish, French, German, and Portuguese." },
+      { "q": "Is there a file size limit?", "a": "Up to 100MB and a maximum video length of 5 minutes. Please split larger files before uploading." },
+      { "q": "Do you support subtitle formats other than SRT?", "a": "Currently only SRT format is supported. We plan to add more formats like VTT and ASS in the future." },
+      { "q": "How do I charge credits?", "a": "After logging in, go to the Credits page to select and purchase your preferred package." },
+      { "q": "What if I'm not satisfied with the translation?", "a": "You can open the downloaded SRT file in a text editor and edit it directly. The subtitle file is in plain text format." }
+    ],
+    "cta": {
+      "title": "Experience",
+      "titleAccent": "subtitle automation now",
+      "desc": "All you need is a video. Bako handles the rest.",
+      "button": "Get Started Free →"
+    },
+    "footer": {
+      "tagline": "AI Subtitle Automation",
+      "signin": "Sign in",
+      "signup": "Sign up",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

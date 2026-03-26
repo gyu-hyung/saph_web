@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "Koreansk",
+    "en": "Engelsk",
+    "ja": "Japansk",
+    "zh": "Kinesisk (forenklet)",
+    "es": "Spansk",
+    "fr": "Fransk",
+    "de": "Tysk",
+    "pt": "Portugisisk",
+    "ar": "Arabisk",
+    "da": "Dansk",
+    "fi": "Finsk",
+    "it": "Italiensk",
+    "nl": "Hollandsk",
+    "pl": "Polsk",
+    "sv": "Svensk",
+    "tr": "Tyrkisk"
+  },
+  "theme": {
+    "toDark": "Skift til mørk tilstand",
+    "toLight": "Skift til lys tilstand"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "myVideos": "Mine videoer",
+    "credits": "Kreditter",
+    "settings": "Indstillinger",
+    "signOut": "Log ud",
+    "uiLanguage": "Grænsefladesprog"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Upload en video for at generere undertekster automatisk",
+    "balance": "Saldo: {{count}} min",
+    "dragDrop": "Træk og slip",
+    "uploadHint": "Upload videofiler i MP4, MOV, AVI",
+    "uploadConstraints": "Maks. filstørrelse: 100 MB · Maks. varighed: 5 minutter",
+    "browseFiles": "Gennemse filer",
+    "uploading": "Uploader...",
+    "requiredCredits": "Nødvendige kreditter",
+    "currentBalance": "Aktuel saldo",
+    "targetLanguage": "Oversættelsessprog",
+    "change": "Skift",
+    "insufficientCredits": "Utilstrækkelige kreditter. Du mangler {{count}} minutter.",
+    "chargeCredits": "Optank kreditter",
+    "startTranslation": "Start oversættelse",
+    "requestingTranslation": "Anmoder om oversættelse...",
+    "minutes": "{{count}} min",
+    "processingProgress": "Behandlingsfremskridt",
+    "steps": {
+      "audioExtract": "Lydudtrækning",
+      "stt": "STT (Whisper)",
+      "translate": "Oversættelse",
+      "srtBuild": "SRT-generering"
+    },
+    "errors": {
+      "fileTooLarge": "Filen overstiger 100 MB.",
+      "videoTooLong": "Videoen overstiger 5 minutter.",
+      "unsupportedFormat": "Ikke-understøttet filformat.",
+      "uploadFailed": "Upload mislykkedes.",
+      "translateFailed": "Oversættelsesanmodning mislykkedes."
+    }
+  },
+  "processing": {
+    "title": "Behandler",
+    "job": "Job #{{id}}",
+    "waitingInQueue": "VENTER I KØ...",
+    "queuePosition": "Køposition",
+    "estimatedWait": "Anslået ventetid: {{time}}",
+    "closeWindowWarningQueue": "Lukning af vinduet kan betyde, at du mister din plads i køen.",
+    "processingTitle": "Behandler...",
+    "overallProgress": "Samlet fremskridt",
+    "closeWindowWarning": "Luk ikke vinduet, før behandlingen er afsluttet.",
+    "completed": "Færdig!",
+    "redirecting": "Omdirigerer til resultater...",
+    "failed": "Behandling mislykkedes",
+    "failedError": "Der opstod en fejl under behandlingen.",
+    "backToDashboard": "Tilbage til dashboard",
+    "processingProgress": "Behandlingsfremskridt",
+    "waitingStatus": "Venter i kø",
+    "analysisStatus": "Analyse og transskription"
+  },
+  "auth": {
+    "signInTitle": "Log ind på Bako",
+    "signUpTitle": "Opret din konto",
+    "withGoogle": "Fortsæt med Google",
+    "withApple": "Fortsæt med Apple",
+    "signUpWithGoogle": "Tilmeld dig med Google",
+    "signUpWithApple": "Tilmeld dig med Apple",
+    "processing": "Behandler...",
+    "emailLabel": "E-mailadresse",
+    "passwordLabel": "Adgangskode",
+    "nicknameLabel": "Kaldenavn",
+    "nicknamePlaceholder": "Dit visningsnavn",
+    "confirmPasswordLabel": "Bekræft adgangskode",
+    "signInBtn": "Log ind",
+    "signingIn": "Logger ind...",
+    "signUpBtn": "Tilmeld dig",
+    "creatingAccount": "Opretter konto...",
+    "newUser": "Ny på Bako?",
+    "createAccount": "Opret en konto",
+    "haveAccount": "Har du allerede en konto?",
+    "signIn": "Log ind",
+    "errors": {
+      "invalidCredential": "Forkert e-mail eller adgangskode.",
+      "blocked": "Denne konto er blevet blokeret.",
+      "tooManyRequests": "For mange loginforsøg. Prøv igen senere.",
+      "googleFailed": "Google-login mislykkedes.",
+      "appleFailed": "Apple-login mislykkedes.",
+      "passwordMismatch": "Adgangskoderne stemmer ikke overens.",
+      "emailInUse": "Denne e-mail er allerede i brug.",
+      "weakPassword": "Adgangskoden skal have mindst 6 tegn.",
+      "invalidEmail": "Ugyldig e-mailadresse.",
+      "signupFailed": "Tilmelding mislykkedes.",
+      "loginFailed": "Login mislykkedes."
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "Log ind",
+      "getStarted": "Kom gratis i gang"
+    },
+    "hero": {
+      "badge": "✦ AI Automatisk undertekstgenerering",
+      "title": "Upload din video,",
+      "titleAccent": "underteksterne er klar",
+      "desc": "Uden komplekse handlinger skal du blot uploade din videofil, og høj kvalitet SRT undertekstfiler genereres automatisk.",
+      "cta": "Kom gratis i gang →",
+      "login": "Log ind",
+      "mockDrag": "Træk din videofil hertil",
+      "mockHint": "MP4 · MOV · AVI · Maks. 100 MB",
+      "mockStep1": "Lydudtrækning",
+      "mockStep2": "Talegenkendelse",
+      "mockStep3": "Oversættelse",
+      "mockStep4": "SRT-generering",
+      "mockDone": "færdig",
+      "mockProcessing": "behandler",
+      "mockPending": "afventer"
+    },
+    "howItWorks": {
+      "label": "Sådan fungerer det",
+      "title": "Undertekstgenerering i 3 trin"
+    },
+    "steps": [
+      { "title": "Upload video", "desc": "Træk og slip, eller klik for at uploade MP4-, MOV-, AVI-filer." },
+      { "title": "AI-behandling", "desc": "Genkender automatisk tale og konverterer det til præcis underteksttekst." },
+      { "title": "Download SRT", "desc": "Download straks den færdige undertekstfil i SRT-format." }
+    ],
+    "features": {
+      "label": "Funktioner",
+      "title": "Hvorfor vælge Bako?"
+    },
+    "featureItems": [
+      { "title": "Hurtig behandling", "desc": "Behandling starter umiddelbart efter upload, så du hurtigt får resultater." },
+      { "title": "Høj nøjagtighed", "desc": "Genkender nøjagtigt forskellige sprog og accenter for at generere naturlige undertekster." },
+      { "title": "Standard SRT-format", "desc": "Fuldt kompatibel med alle videoredigeringsværktøjer, herunder Premiere, DaVinci og Final Cut Pro." },
+      { "title": "Kreditbaseret fakturering", "desc": "Trækkes kun for den anvendte videolængde. Brug fleksibelt baseret på forbrug, ikke abonnement." },
+      { "title": "Support for flere formater", "desc": "Understøtter vigtige videoformater, herunder MP4, MOV og AVI. Op til 100 MB / 5 minutter." },
+      { "title": "Arbejdshistorik", "desc": "Download behandlede videolister og SRT-filer når som helst." }
+    ],
+    "pricing": {
+      "label": "Priser",
+      "title": "Betal kun for det, du bruger",
+      "desc": "Intet abonnement. Optank kreditter og brug dem, når du har brug for det.",
+      "popular": "POPULÆR",
+      "creditUnit": " min kreditter",
+      "buy": "Kom i gang",
+      "planFeatures": [
+        ["10 min kreditter", "Alle grundlæggende funktioner", "Originale + oversatte undertekster"],
+        ["30 min kreditter", "Alle funktioner", "Prioriteret behandling"],
+        ["60 min kreditter", "Alle funktioner", "Prioriteret behandling", "Hurtig behandling"],
+        ["180 min kreditter", "Alle funktioner", "Højeste prioritet behandling", "Store filer"],
+        ["600 min kreditter", "Alle funktioner inkluderet", "Højeste prioritet behandling", "Dedikeret support"]
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Ofte stillede spørgsmål"
+    },
+    "faqItems": [
+      { "q": "Hvilke sprog understøttes?", "a": "Understøtter i øjeblikket talegenkendelse og oversættelse på forskellige sprog, herunder koreansk, engelsk, japansk, kinesisk, spansk, fransk, tysk og portugisisk." },
+      { "q": "Er der en grænse for filstørrelse?", "a": "Op til 100 MB og en maksimal videolængde på 5 minutter. Del venligst større filer, inden de uploades." },
+      { "q": "Understøtter I andre undertekstformater end SRT?", "a": "I øjeblikket understøttes kun SRT-format. Vi planlægger at tilføje flere formater som VTT og ASS i fremtiden." },
+      { "q": "Hvordan optanker jeg kreditter?", "a": "Efter login skal du gå til Kreditter-siden for at vælge og købe din foretrukne pakke." },
+      { "q": "Hvad nu, hvis jeg ikke er tilfreds med oversættelsen?", "a": "Du kan åbne den downloadede SRT-fil i en teksteditor og redigere den direkte. Undertekstfilen er i ren tekstformat." }
+    ],
+    "cta": {
+      "title": "Oplev",
+      "titleAccent": "undertekstautomatisering nu",
+      "desc": "Alt du behøver er en video. Bako klarer resten.",
+      "button": "Kom gratis i gang →"
+    },
+    "footer": {
+      "tagline": "AI Undertekstautomatisering",
+      "signin": "Log ind",
+      "signup": "Tilmeld dig",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

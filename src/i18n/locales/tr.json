@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "Korece",
+    "en": "İngilizce",
+    "ja": "Japonca",
+    "zh": "Çince (Basitleştirilmiş)",
+    "es": "İspanyolca",
+    "fr": "Fransızca",
+    "de": "Almanca",
+    "pt": "Portekizce",
+    "ar": "Arapça",
+    "da": "Danca",
+    "fi": "Fince",
+    "it": "İtalyanca",
+    "nl": "Hollandaca",
+    "pl": "Lehçe",
+    "sv": "İsveççe",
+    "tr": "Türkçe"
+  },
+  "theme": {
+    "toDark": "Karanlık moda geç",
+    "toLight": "Aydınlık moda geç"
+  },
+  "sidebar": {
+    "dashboard": "Panel",
+    "myVideos": "Videolarım",
+    "credits": "Krediler",
+    "settings": "Ayarlar",
+    "signOut": "Çıkış yap",
+    "uiLanguage": "Arayüz dili"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "Altyazı oluşturmak için bir video yükleyin",
+    "balance": "Bakiye: {{count}} dak",
+    "dragDrop": "Sürükle ve Bırak",
+    "uploadHint": "MP4, MOV, AVI video dosyalarını yükleyin",
+    "uploadConstraints": "Maks. dosya boyutu: 100 MB · Maks. süre: 5 dakika",
+    "browseFiles": "Dosya seç",
+    "uploading": "Yükleniyor...",
+    "requiredCredits": "Gerekli Kredi",
+    "currentBalance": "Mevcut bakiye",
+    "targetLanguage": "Çeviri dili",
+    "change": "Değiştir",
+    "insufficientCredits": "Yetersiz kredi. {{count}} dakika daha gerekiyor.",
+    "chargeCredits": "Kredi yükle",
+    "startTranslation": "Çeviriyi başlat",
+    "requestingTranslation": "Çeviri talep ediliyor...",
+    "minutes": "{{count}} dak",
+    "processingProgress": "İşleme İlerlemesi",
+    "steps": {
+      "audioExtract": "Ses Çıkarma",
+      "stt": "STT (Whisper)",
+      "translate": "Çeviri",
+      "srtBuild": "SRT Oluşturma"
+    },
+    "errors": {
+      "fileTooLarge": "Dosya 100 MB'ı aşıyor.",
+      "videoTooLong": "Video 5 dakikayı aşıyor.",
+      "unsupportedFormat": "Desteklenmeyen dosya formatı.",
+      "uploadFailed": "Yükleme başarısız oldu.",
+      "translateFailed": "Çeviri isteği başarısız oldu."
+    }
+  },
+  "processing": {
+    "title": "İşleniyor",
+    "job": "İş #{{id}}",
+    "waitingInQueue": "SIRA BEKLENİYOR...",
+    "queuePosition": "Sıra Konumu",
+    "estimatedWait": "Tahmini bekleme: {{time}}",
+    "closeWindowWarningQueue": "Pencereyi kapatmak sıradaki yerinizi kaybettirebilir.",
+    "processingTitle": "İşleniyor...",
+    "overallProgress": "Genel İlerleme",
+    "closeWindowWarning": "İşlem tamamlanana kadar pencereyi kapatmayın.",
+    "completed": "Tamamlandı!",
+    "redirecting": "Sonuçlara yönlendiriliyor...",
+    "failed": "İşleme Başarısız",
+    "failedError": "İşleme sırasında bir hata oluştu.",
+    "backToDashboard": "Panele dön",
+    "processingProgress": "İşleme İlerlemesi",
+    "waitingStatus": "Sıra bekleniyor",
+    "analysisStatus": "Analiz ve Transkripsiyon"
+  },
+  "auth": {
+    "signInTitle": "Bako'ya Giriş Yap",
+    "signUpTitle": "Hesabını Oluştur",
+    "withGoogle": "Google ile Devam Et",
+    "withApple": "Apple ile Devam Et",
+    "signUpWithGoogle": "Google ile Kayıt Ol",
+    "signUpWithApple": "Apple ile Kayıt Ol",
+    "processing": "İşleniyor...",
+    "emailLabel": "E-posta adresi",
+    "passwordLabel": "Şifre",
+    "nicknameLabel": "Kullanıcı adı",
+    "nicknamePlaceholder": "Görünen adın",
+    "confirmPasswordLabel": "Şifreyi Onayla",
+    "signInBtn": "Giriş Yap",
+    "signingIn": "Giriş yapılıyor...",
+    "signUpBtn": "Kayıt Ol",
+    "creatingAccount": "Hesap oluşturuluyor...",
+    "newUser": "Bako'da yeni misin?",
+    "createAccount": "Hesap oluştur",
+    "haveAccount": "Zaten hesabın var mı?",
+    "signIn": "Giriş Yap",
+    "errors": {
+      "invalidCredential": "Hatalı e-posta veya şifre.",
+      "blocked": "Bu hesap engellendi.",
+      "tooManyRequests": "Çok fazla giriş denemesi. Lütfen daha sonra tekrar deneyin.",
+      "googleFailed": "Google girişi başarısız.",
+      "appleFailed": "Apple girişi başarısız.",
+      "passwordMismatch": "Şifreler eşleşmiyor.",
+      "emailInUse": "Bu e-posta adresi zaten kullanımda.",
+      "weakPassword": "Şifre en az 6 karakter olmalıdır.",
+      "invalidEmail": "Geçersiz e-posta adresi.",
+      "signupFailed": "Kayıt başarısız oldu.",
+      "loginFailed": "Giriş başarısız oldu."
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "Giriş yap",
+      "getStarted": "Ücretsiz başla"
+    },
+    "hero": {
+      "badge": "✦ AI Otomatik Altyazı Oluşturma",
+      "title": "Videonuzu yükleyin,",
+      "titleAccent": "altyazılar hazır",
+      "desc": "Karmaşık işlemler olmadan, sadece video dosyanızı yükleyin ve yüksek kaliteli SRT altyazı dosyaları otomatik olarak oluşturulsun.",
+      "cta": "Ücretsiz Başla →",
+      "login": "Giriş yap",
+      "mockDrag": "Video dosyanızı buraya sürükleyin",
+      "mockHint": "MP4 · MOV · AVI · Maks. 100 MB",
+      "mockStep1": "Ses Çıkarma",
+      "mockStep2": "Konuşma Tanıma",
+      "mockStep3": "Çeviri",
+      "mockStep4": "SRT Oluşturma",
+      "mockDone": "tamamlandı",
+      "mockProcessing": "işleniyor",
+      "mockPending": "bekliyor"
+    },
+    "howItWorks": {
+      "label": "Nasıl çalışır",
+      "title": "3 adımda altyazı oluşturma"
+    },
+    "steps": [
+      { "title": "Video Yükle", "desc": "MP4, MOV, AVI dosyalarını yüklemek için sürükle bırak veya tıkla." },
+      { "title": "AI İşleme", "desc": "Konuşmayı otomatik olarak tanır ve doğru altyazı metnine dönüştürür." },
+      { "title": "SRT İndir", "desc": "Tamamlanan altyazı dosyasını SRT formatında anında indirin." }
+    ],
+    "features": {
+      "label": "Özellikler",
+      "title": "Neden Bako'yu seçmelisiniz?"
+    },
+    "featureItems": [
+      { "title": "Hızlı İşleme", "desc": "Hızlı sonuçlar için yüklemeden hemen sonra işleme başlar." },
+      { "title": "Yüksek Doğruluk", "desc": "Doğal altyazılar oluşturmak için çeşitli dilleri ve aksanları doğru şekilde tanır." },
+      { "title": "Standart SRT Formatı", "desc": "Premiere, DaVinci ve Final Cut Pro dahil tüm video düzenleme araçlarıyla tam uyumlu." },
+      { "title": "Kredi Bazlı Faturalandırma", "desc": "Yalnızca kullanılan video uzunluğu için düşülür. Abonelik değil, kullanıma göre esnek kullanın." },
+      { "title": "Çoklu Format Desteği", "desc": "MP4, MOV ve AVI dahil büyük video formatlarını destekler. 100 MB / 5 dakikaya kadar." },
+      { "title": "Çalışma Geçmişi", "desc": "İşlenmiş video listelerini ve SRT dosyalarını istediğiniz zaman indirin." }
+    ],
+    "pricing": {
+      "label": "Fiyatlandırma",
+      "title": "Yalnızca kullandığınız kadar ödeyin",
+      "desc": "Abonelik yok. Kredi yükleyin ve ihtiyaç duyduğunuzda kullanın.",
+      "popular": "POPÜLER",
+      "creditUnit": " dak kredi",
+      "buy": "Başla",
+      "planFeatures": [
+        ["10 dak kredi", "Tüm temel özellikler", "Orijinal + çevrilmiş altyazılar"],
+        ["30 dak kredi", "Tüm özellikler", "Öncelikli işleme"],
+        ["60 dak kredi", "Tüm özellikler", "Öncelikli işleme", "Hızlı işleme"],
+        ["180 dak kredi", "Tüm özellikler", "En yüksek öncelikli işleme", "Büyük dosyalar"],
+        ["600 dak kredi", "Tüm özellikler dahil", "En yüksek öncelikli işleme", "Özel destek"]
+      ]
+    },
+    "faq": {
+      "label": "SSS",
+      "title": "Sık Sorulan Sorular"
+    },
+    "faqItems": [
+      { "q": "Hangi diller destekleniyor?", "a": "Şu anda Korece, İngilizce, Japonca, Çince, İspanyolca, Fransızca, Almanca ve Portekizce dahil çeşitli dillerde konuşma tanıma ve çeviriyi desteklemektedir." },
+      { "q": "Dosya boyutu sınırı var mı?", "a": "100 MB'a kadar ve maksimum 5 dakika video uzunluğu. Daha büyük dosyaları yüklemeden önce bölün." },
+      { "q": "SRT dışında başka altyazı formatlarını destekliyor musunuz?", "a": "Şu anda yalnızca SRT formatı desteklenmektedir. Gelecekte VTT ve ASS gibi daha fazla format eklemeyi planlıyoruz." },
+      { "q": "Kredileri nasıl yüklerim?", "a": "Giriş yaptıktan sonra, tercih ettiğiniz paketi seçmek ve satın almak için Krediler sayfasına gidin." },
+      { "q": "Çeviriden memnun olmazsam ne olur?", "a": "İndirilen SRT dosyasını bir metin düzenleyicide açabilir ve doğrudan düzenleyebilirsiniz. Altyazı dosyası düz metin formatındadır." }
+    ],
+    "cta": {
+      "title": "Deneyimleyin",
+      "titleAccent": "altyazı otomasyonunu şimdi",
+      "desc": "Tek ihtiyacınız bir video. Gerisini Bako halleder.",
+      "button": "Ücretsiz Başla →"
+    },
+    "footer": {
+      "tagline": "AI Altyazı Otomasyonu",
+      "signin": "Giriş yap",
+      "signup": "Kayıt ol",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

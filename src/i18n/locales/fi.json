@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "Korea",
+    "en": "Englanti",
+    "ja": "Japani",
+    "zh": "Kiina (yksinkertaistettu)",
+    "es": "Espanja",
+    "fr": "Ranska",
+    "de": "Saksa",
+    "pt": "Portugali",
+    "ar": "Arabia",
+    "da": "Tanska",
+    "fi": "Suomi",
+    "it": "Italia",
+    "nl": "Hollanti",
+    "pl": "Puola",
+    "sv": "Ruotsi",
+    "tr": "Turkki"
+  },
+  "theme": {
+    "toDark": "Vaihda tummaan tilaan",
+    "toLight": "Vaihda vaaleaan tilaan"
+  },
+  "sidebar": {
+    "dashboard": "Kojelauta",
+    "myVideos": "Omat videot",
+    "credits": "Krediitit",
+    "settings": "Asetukset",
+    "signOut": "Kirjaudu ulos",
+    "uiLanguage": "Käyttöliittymän kieli"
+  },
+  "dashboard": {
+    "title": "Kojelauta",
+    "subtitle": "Lataa video luodaksesi tekstitykset automaattisesti",
+    "balance": "Saldo: {{count}} min",
+    "dragDrop": "Raahaa ja pudota",
+    "uploadHint": "Lataa MP4-, MOV-, AVI-videotiedostoja",
+    "uploadConstraints": "Enimmäistiedostokoko: 100 Mt · Enimmäiskesto: 5 minuuttia",
+    "browseFiles": "Selaa tiedostoja",
+    "uploading": "Ladataan...",
+    "requiredCredits": "Tarvittavat krediitit",
+    "currentBalance": "Nykyinen saldo",
+    "targetLanguage": "Käännöskieli",
+    "change": "Vaihda",
+    "insufficientCredits": "Krediitit loppu. Tarvitset vielä {{count}} minuuttia.",
+    "chargeCredits": "Lataa krediittejä",
+    "startTranslation": "Aloita käännös",
+    "requestingTranslation": "Pyydetään käännöstä...",
+    "minutes": "{{count}} min",
+    "processingProgress": "Käsittelyn edistyminen",
+    "steps": {
+      "audioExtract": "Äänen erottaminen",
+      "stt": "STT (Whisper)",
+      "translate": "Käännös",
+      "srtBuild": "SRT-luonti"
+    },
+    "errors": {
+      "fileTooLarge": "Tiedosto ylittää 100 Mt.",
+      "videoTooLong": "Video ylittää 5 minuuttia.",
+      "unsupportedFormat": "Tiedostomuotoa ei tueta.",
+      "uploadFailed": "Lataus epäonnistui.",
+      "translateFailed": "Käännöspyyntö epäonnistui."
+    }
+  },
+  "processing": {
+    "title": "Käsitellään",
+    "job": "Työ #{{id}}",
+    "waitingInQueue": "ODOTETAAN JONOSSA...",
+    "queuePosition": "Jonopaikka",
+    "estimatedWait": "Arvioitu odotusaika: {{time}}",
+    "closeWindowWarningQueue": "Ikkunan sulkeminen voi aiheuttaa jonopaikkasi menettämisen.",
+    "processingTitle": "Käsitellään...",
+    "overallProgress": "Kokonaisedistyminen",
+    "closeWindowWarning": "Älä sulje ikkunaa ennen käsittelyn valmistumista.",
+    "completed": "Valmis!",
+    "redirecting": "Siirrytään tuloksiin...",
+    "failed": "Käsittely epäonnistui",
+    "failedError": "Käsittelyn aikana tapahtui virhe.",
+    "backToDashboard": "Takaisin kojelautaan",
+    "processingProgress": "Käsittelyn edistyminen",
+    "waitingStatus": "Odotetaan jonossa",
+    "analysisStatus": "Analyysi ja litterointi"
+  },
+  "auth": {
+    "signInTitle": "Kirjaudu Bakoon",
+    "signUpTitle": "Luo tilisi",
+    "withGoogle": "Jatka Googlella",
+    "withApple": "Jatka Applella",
+    "signUpWithGoogle": "Rekisteröidy Googlella",
+    "signUpWithApple": "Rekisteröidy Applella",
+    "processing": "Käsitellään...",
+    "emailLabel": "Sähköpostiosoite",
+    "passwordLabel": "Salasana",
+    "nicknameLabel": "Nimimerkki",
+    "nicknamePlaceholder": "Näyttönimesi",
+    "confirmPasswordLabel": "Vahvista salasana",
+    "signInBtn": "Kirjaudu sisään",
+    "signingIn": "Kirjaudutaan...",
+    "signUpBtn": "Rekisteröidy",
+    "creatingAccount": "Luodaan tiliä...",
+    "newUser": "Uusi Bako-käyttäjä?",
+    "createAccount": "Luo tili",
+    "haveAccount": "Onko sinulla jo tili?",
+    "signIn": "Kirjaudu sisään",
+    "errors": {
+      "invalidCredential": "Virheellinen sähköposti tai salasana.",
+      "blocked": "Tämä tili on estetty.",
+      "tooManyRequests": "Liian monta kirjautumisyritystä. Yritä uudelleen myöhemmin.",
+      "googleFailed": "Google-kirjautuminen epäonnistui.",
+      "appleFailed": "Apple-kirjautuminen epäonnistui.",
+      "passwordMismatch": "Salasanat eivät täsmää.",
+      "emailInUse": "Tämä sähköposti on jo käytössä.",
+      "weakPassword": "Salasanassa on oltava vähintään 6 merkkiä.",
+      "invalidEmail": "Virheellinen sähköpostiosoite.",
+      "signupFailed": "Rekisteröityminen epäonnistui.",
+      "loginFailed": "Kirjautuminen epäonnistui."
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "Kirjaudu sisään",
+      "getStarted": "Aloita ilmaiseksi"
+    },
+    "hero": {
+      "badge": "✦ AI Automaattinen tekstitysluonti",
+      "title": "Lataa videosi,",
+      "titleAccent": "tekstitykset ovat valmiit",
+      "desc": "Ilman monimutkaisia toimintoja lataa vain videotiedostosi ja korkealaatuiset SRT-tekstitystiedostot luodaan automaattisesti.",
+      "cta": "Aloita ilmaiseksi →",
+      "login": "Kirjaudu sisään",
+      "mockDrag": "Raahaa videotiedostosi tähän",
+      "mockHint": "MP4 · MOV · AVI · Enintään 100 Mt",
+      "mockStep1": "Äänen erottaminen",
+      "mockStep2": "Puheentunnistus",
+      "mockStep3": "Käännös",
+      "mockStep4": "SRT-luonti",
+      "mockDone": "valmis",
+      "mockProcessing": "käsitellään",
+      "mockPending": "odottaa"
+    },
+    "howItWorks": {
+      "label": "Kuinka se toimii",
+      "title": "Tekstitysluonti 3 vaiheessa"
+    },
+    "steps": [
+      { "title": "Lataa video", "desc": "Raahaa ja pudota tai napsauta ladataksesi MP4-, MOV-, AVI-tiedostoja." },
+      { "title": "Tekoälykäsittely", "desc": "Tunnistaa puheen automaattisesti ja muuntaa sen tarkaksi tekstitystekstiksi." },
+      { "title": "Lataa SRT", "desc": "Lataa valmis tekstitystiedosto SRT-muodossa välittömästi." }
+    ],
+    "features": {
+      "label": "Ominaisuudet",
+      "title": "Miksi valita Bako?"
+    },
+    "featureItems": [
+      { "title": "Nopea käsittely", "desc": "Käsittely alkaa heti latauksen jälkeen, jotta saat tulokset nopeasti." },
+      { "title": "Korkea tarkkuus", "desc": "Tunnistaa tarkasti eri kielet ja aksentit luodakseen luonnollisia tekstityksiä." },
+      { "title": "SRT-standardimuoto", "desc": "Täysin yhteensopiva kaikkien videoeditoreiden kanssa, mukaan lukien Premiere, DaVinci ja Final Cut Pro." },
+      { "title": "Krediittipohjainen laskutus", "desc": "Vähennetään vain käytetyn videon pituuden mukaan. Käytä joustavasti käytön perusteella, ei tilauksen." },
+      { "title": "Useiden muotojen tuki", "desc": "Tukee tärkeimpiä videomuotoja, mukaan lukien MP4, MOV ja AVI. Enintään 100 Mt / 5 minuuttia." },
+      { "title": "Työhistoria", "desc": "Lataa käsitellyt videoluettelot ja SRT-tiedostot milloin tahansa." }
+    ],
+    "pricing": {
+      "label": "Hinnoittelu",
+      "title": "Maksa vain siitä mitä käytät",
+      "desc": "Ei tilauksia. Lataa krediittejä ja käytä niitä tarvittaessa.",
+      "popular": "SUOSITTU",
+      "creditUnit": " min krediittiä",
+      "buy": "Aloita",
+      "planFeatures": [
+        ["10 min krediittiä", "Kaikki perusominaisuudet", "Alkuperäinen + käännetyt tekstitykset"],
+        ["30 min krediittiä", "Kaikki ominaisuudet", "Prioriteettikäsittely"],
+        ["60 min krediittiä", "Kaikki ominaisuudet", "Prioriteettikäsittely", "Nopea käsittely"],
+        ["180 min krediittiä", "Kaikki ominaisuudet", "Korkein prioriteettikäsittely", "Suuret tiedostot"],
+        ["600 min krediittiä", "Kaikki ominaisuudet sisällytetty", "Korkein prioriteettikäsittely", "Omistettu tuki"]
+      ]
+    },
+    "faq": {
+      "label": "UKK",
+      "title": "Usein kysytyt kysymykset"
+    },
+    "faqItems": [
+      { "q": "Mitä kieliä tuetaan?", "a": "Tukee tällä hetkellä puheentunnistusta ja käännöstä useilla kielillä, mukaan lukien korea, englanti, japani, kiina, espanja, ranska, saksa ja portugali." },
+      { "q": "Onko tiedostokoolle rajoituksia?", "a": "Enintään 100 Mt ja videon enimmäispituus 5 minuuttia. Jaa suuremmat tiedostot ennen lataamista." },
+      { "q": "Tuetteko muita tekstitysmuotoja kuin SRT?", "a": "Tällä hetkellä tuetaan vain SRT-muotoa. Suunnittelemme lisätä muita muotoja kuten VTT ja ASS tulevaisuudessa." },
+      { "q": "Kuinka lataan krediittejä?", "a": "Kirjautumisen jälkeen siirry Krediitit-sivulle valitaksesi ja ostaaksesi haluamasi paketin." },
+      { "q": "Mitä jos en ole tyytyväinen käännökseen?", "a": "Voit avata ladatun SRT-tiedoston tekstieditorissa ja muokata sitä suoraan. Tekstitystiedosto on pelkkää tekstimuotoa." }
+    ],
+    "cta": {
+      "title": "Koe",
+      "titleAccent": "tekstitysautomaatio nyt",
+      "desc": "Tarvitset vain videon. Bako hoitaa loput.",
+      "button": "Aloita ilmaiseksi →"
+    },
+    "footer": {
+      "tagline": "AI Tekstitysautomaatio",
+      "signin": "Kirjaudu sisään",
+      "signup": "Rekisteröidy",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

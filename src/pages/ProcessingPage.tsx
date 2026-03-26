@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { videoApi } from '../api/client';
 import type { SSEEvent } from '../types';
 
@@ -14,11 +15,11 @@ interface ProcessingStep {
   percent: number;
 }
 
-const initialSteps: ProcessingStep[] = [
-  { id: 'AUDIO_EXTRACT', label: 'Audio Extraction', sublabel: 'FFmpeg', status: 'pending', percent: 0 },
-  { id: 'STT', label: 'STT (Whisper)', sublabel: 'faster-whisper', status: 'pending', percent: 0 },
-  { id: 'TRANSLATE', label: 'Translation (Gemma 3)', sublabel: 'Ollama', status: 'pending', percent: 0 },
-  { id: 'SRT_BUILD', label: 'SRT Generation', sublabel: 'Build output', status: 'pending', percent: 0 },
+const BASE_STEPS = [
+  { id: 'AUDIO_EXTRACT', sublabel: 'FFmpeg' },
+  { id: 'STT', sublabel: 'faster-whisper' },
+  { id: 'TRANSLATE', sublabel: 'Ollama' },
+  { id: 'SRT_BUILD', sublabel: 'Build output' },
 ];
 
 const statusColors: Record<StepStatus, string> = {
@@ -43,6 +44,14 @@ function formatWaitTime(sec: number): string {
 export default function ProcessingPage() {
   const { jobId } = useParams<{ jobId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const initialSteps = (): ProcessingStep[] => [
+    { id: 'AUDIO_EXTRACT', label: t('dashboard.steps.audioExtract'), sublabel: BASE_STEPS[0].sublabel, status: 'pending', percent: 0 },
+    { id: 'STT', label: t('dashboard.steps.stt'), sublabel: BASE_STEPS[1].sublabel, status: 'pending', percent: 0 },
+    { id: 'TRANSLATE', label: t('dashboard.steps.translate'), sublabel: BASE_STEPS[2].sublabel, status: 'pending', percent: 0 },
+    { id: 'SRT_BUILD', label: t('dashboard.steps.srtBuild'), sublabel: BASE_STEPS[3].sublabel, status: 'pending', percent: 0 },
+  ];
 
   const [status, setStatus] = useState<'queued' | 'processing' | 'completed' | 'failed' | 'loading'>('loading');
   const [queuePosition, setQueuePosition] = useState<number | null>(null);
@@ -50,7 +59,7 @@ export default function ProcessingPage() {
   const [overallPercent, setOverallPercent] = useState(0);
   const [currentMessage, setCurrentMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [steps, setSteps] = useState<ProcessingStep[]>(initialSteps);
+  const [steps, setSteps] = useState<ProcessingStep[]>(() => initialSteps());
 
   const eventSourceRef = useRef<EventSource | null>(null);
 
@@ -91,7 +100,7 @@ export default function ProcessingPage() {
           }
           if (job.status === 'FAILED') {
             setStatus('failed');
-            setErrorMessage(job.errorMessage || '처리 중 오류가 발생했습니다.');
+            setErrorMessage(job.errorMessage || t('processing.failedError'));
             return;
           }
         }
@@ -155,7 +164,7 @@ export default function ProcessingPage() {
     es.addEventListener('failed', (e: MessageEvent) => {
       const data: SSEEvent = JSON.parse(e.data);
       setStatus('failed');
-      setErrorMessage(data.error || '처리 중 오류가 발생했습니다.');
+      setErrorMessage(data.error || t('processing.failedError'));
       es.close();
     });
 
@@ -190,9 +199,9 @@ export default function ProcessingPage() {
           borderBottom: '1px solid var(--border)',
         }}
       >
-        <h1 style={{ fontSize: '22px', fontWeight: 700 }}>Processing</h1>
+        <h1 style={{ fontSize: '22px', fontWeight: 700 }}>{t('processing.title')}</h1>
         <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-          Job #{jobId}
+          {t('processing.job', { id: jobId })}
         </p>
       </motion.div>
 
@@ -257,7 +266,7 @@ export default function ProcessingPage() {
                       marginBottom: '12px',
                     }}
                   >
-                    WAITING IN QUEUE...
+                    {t('processing.waitingInQueue')}
                   </motion.p>
                   {queuePosition !== null && (
                     <motion.p
@@ -266,7 +275,7 @@ export default function ProcessingPage() {
                       transition={{ delay: 0.15 }}
                       style={{ fontSize: '18px', color: 'var(--text-secondary)', marginBottom: '8px' }}
                     >
-                      Queue Position:{' '}
+                      {t('processing.queuePosition')}:{' '}
                       <span style={{ fontWeight: 700, color: 'var(--warning)' }}>#{queuePosition}</span>
                     </motion.p>
                   )}
@@ -277,7 +286,7 @@ export default function ProcessingPage() {
                       transition={{ delay: 0.2 }}
                       style={{ fontSize: '14px', color: 'var(--text-muted)' }}
                     >
-                      예상 대기 시간: {formatWaitTime(estimatedWait)}
+                      {t('processing.estimatedWait', { time: formatWaitTime(estimatedWait) })}
                     </motion.p>
                   )}
                 </div>
@@ -328,7 +337,7 @@ export default function ProcessingPage() {
                   }}
                 >
                   <span style={{ color: 'var(--warning)' }}>⚠</span>
-                  창을 닫으시면 대기 순번을 잃을 수 있습니다.
+                  {t('processing.closeWindowWarningQueue')}
                 </motion.div>
               </motion.div>
             )}
@@ -355,7 +364,7 @@ export default function ProcessingPage() {
                       marginBottom: '8px',
                     }}
                   >
-                    처리 중...
+                    {t('processing.processingTitle')}
                   </p>
                   {currentMessage && (
                     <motion.p
@@ -372,7 +381,7 @@ export default function ProcessingPage() {
 
                 <div style={{ width: '100%', maxWidth: '400px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>전체 진행률</span>
+                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{t('processing.overallProgress')}</span>
                     <span style={{ fontSize: '13px', fontWeight: 600 }}>{overallPercent}%</span>
                   </div>
                   <div
@@ -423,7 +432,7 @@ export default function ProcessingPage() {
                   }}
                 >
                   <span style={{ color: 'var(--warning)' }}>⚠</span>
-                  처리가 완료될 때까지 창을 닫지 마세요.
+                  {t('processing.closeWindowWarning')}
                 </motion.div>
               </motion.div>
             )}
@@ -461,10 +470,10 @@ export default function ProcessingPage() {
                   ✓
                 </motion.div>
                 <p style={{ fontSize: '22px', fontWeight: 700, marginBottom: '8px', color: 'var(--success)' }}>
-                  완료!
+                  {t('processing.completed')}
                 </p>
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                  결과 화면으로 이동합니다...
+                  {t('processing.redirecting')}
                 </p>
               </motion.div>
             )}
@@ -503,7 +512,7 @@ export default function ProcessingPage() {
                   ✕
                 </motion.div>
                 <p style={{ fontSize: '22px', fontWeight: 700, marginBottom: '12px', color: 'var(--error)' }}>
-                  처리 실패
+                  {t('processing.failed')}
                 </p>
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
                   {errorMessage}
@@ -521,7 +530,7 @@ export default function ProcessingPage() {
                     cursor: 'pointer',
                   }}
                 >
-                  대시보드로 돌아가기
+                  {t('processing.backToDashboard')}
                 </button>
               </motion.div>
             )}
@@ -546,7 +555,7 @@ export default function ProcessingPage() {
           }}
         >
           <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: 'var(--text-secondary)' }}>
-            Processing Progress
+            {t('processing.processingProgress')}
           </h3>
 
           {steps.map((step, idx) => (
@@ -635,7 +644,7 @@ export default function ProcessingPage() {
               />
             </div>
             <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px' }}>
-              {status === 'queued' ? 'Waiting in queue' : 'Analysis and Transcription'}
+              {status === 'queued' ? t('processing.waitingStatus') : t('processing.analysisStatus')}
             </p>
           </div>
         </motion.div>

@@ -1,0 +1,189 @@
+{
+  "languages": {
+    "ko": "Coreano",
+    "en": "Inglês",
+    "ja": "Japonês",
+    "zh": "Chinês (simplificado)",
+    "es": "Espanhol",
+    "fr": "Francês",
+    "de": "Alemão",
+    "pt": "Português",
+    "ar": "Árabe",
+    "da": "Dinamarquês",
+    "fi": "Finlandês",
+    "it": "Italiano",
+    "nl": "Holandês",
+    "pl": "Polonês",
+    "sv": "Sueco",
+    "tr": "Turco"
+  },
+  "theme": {
+    "toDark": "Mudar para modo escuro",
+    "toLight": "Mudar para modo claro"
+  },
+  "sidebar": {
+    "dashboard": "Painel",
+    "myVideos": "Meus vídeos",
+    "credits": "Créditos",
+    "settings": "Configurações",
+    "signOut": "Sair",
+    "uiLanguage": "Idioma da interface"
+  },
+  "dashboard": {
+    "title": "Painel",
+    "subtitle": "Faça upload de um vídeo para gerar legendas automaticamente",
+    "balance": "Saldo: {{count}} min",
+    "dragDrop": "Arraste e solte",
+    "uploadHint": "Faça upload de arquivos de vídeo MP4, MOV, AVI",
+    "uploadConstraints": "Tamanho máximo: 100 MB · Duração máxima: 5 minutos",
+    "browseFiles": "Procurar arquivos",
+    "uploading": "Enviando...",
+    "requiredCredits": "Créditos necessários",
+    "currentBalance": "Saldo atual",
+    "targetLanguage": "Idioma de tradução",
+    "change": "Alterar",
+    "insufficientCredits": "Créditos insuficientes. Você precisa de mais {{count}} minutos.",
+    "chargeCredits": "Recarregar créditos",
+    "startTranslation": "Iniciar tradução",
+    "requestingTranslation": "Solicitando tradução...",
+    "minutes": "{{count}} min",
+    "processingProgress": "Progresso do processamento",
+    "steps": {
+      "audioExtract": "Extração de áudio",
+      "stt": "STT (Whisper)",
+      "translate": "Tradução",
+      "srtBuild": "Geração de SRT"
+    },
+    "errors": {
+      "fileTooLarge": "O arquivo excede 100 MB.",
+      "videoTooLong": "O vídeo excede 5 minutos.",
+      "unsupportedFormat": "Formato de arquivo não suportado.",
+      "uploadFailed": "Falha no upload.",
+      "translateFailed": "Falha na solicitação de tradução."
+    }
+  },
+  "processing": {
+    "title": "Processando",
+    "job": "Tarefa #{{id}}",
+    "waitingInQueue": "AGUARDANDO NA FILA...",
+    "queuePosition": "Posição na fila",
+    "estimatedWait": "Espera estimada: {{time}}",
+    "closeWindowWarningQueue": "Fechar a janela pode fazer você perder sua posição na fila.",
+    "processingTitle": "Processando...",
+    "overallProgress": "Progresso geral",
+    "closeWindowWarning": "Por favor, não feche a janela até o processamento ser concluído.",
+    "completed": "Concluído!",
+    "redirecting": "Redirecionando para os resultados...",
+    "failed": "Processamento falhou",
+    "failedError": "Ocorreu um erro durante o processamento.",
+    "backToDashboard": "Voltar ao painel",
+    "processingProgress": "Progresso do processamento",
+    "waitingStatus": "Aguardando na fila",
+    "analysisStatus": "Análise e transcrição"
+  },
+  "auth": {
+    "signInTitle": "Entrar no Bako",
+    "signUpTitle": "Criar uma conta",
+    "withGoogle": "Continuar com o Google",
+    "withApple": "Continuar com o Apple",
+    "signUpWithGoogle": "Registrar com o Google",
+    "signUpWithApple": "Registrar com o Apple",
+    "processing": "Processando...",
+    "emailLabel": "Endereço de e-mail",
+    "passwordLabel": "Senha",
+    "nicknameLabel": "Apelido",
+    "nicknamePlaceholder": "Seu nome de exibição",
+    "confirmPasswordLabel": "Confirmar senha",
+    "signInBtn": "Entrar",
+    "signingIn": "Entrando...",
+    "signUpBtn": "Registrar",
+    "creatingAccount": "Criando conta...",
+    "newUser": "Novo no Bako?",
+    "createAccount": "Criar uma conta",
+    "haveAccount": "Já tem uma conta?",
+    "signIn": "Entrar",
+    "errors": {
+      "invalidCredential": "E-mail ou senha incorretos.",
+      "blocked": "Esta conta foi bloqueada.",
+      "tooManyRequests": "Muitas tentativas de login. Tente novamente mais tarde.",
+      "googleFailed": "Falha no login com Google.",
+      "appleFailed": "Falha no login com Apple.",
+      "passwordMismatch": "As senhas não correspondem.",
+      "emailInUse": "Este e-mail já está em uso.",
+      "weakPassword": "A senha deve ter pelo menos 6 caracteres.",
+      "invalidEmail": "Endereço de e-mail inválido.",
+      "signupFailed": "Falha no registro.",
+      "loginFailed": "Falha no login."
+    }
+  },
+  "landing": {
+    "nav": { "signin": "Entrar", "getStarted": "Começar gratuitamente" },
+    "hero": {
+      "badge": "✦ Serviço de geração automática de legendas com IA",
+      "title": "Faça upload do seu vídeo,",
+      "titleAccent": "as legendas estão prontas",
+      "desc": "Sem operações complexas, apenas faça upload do seu arquivo de vídeo e arquivos de legendas SRT de alta qualidade são gerados automaticamente.",
+      "cta": "Começar gratuitamente →",
+      "login": "Entrar",
+      "mockDrag": "Arraste seu arquivo de vídeo aqui",
+      "mockHint": "MP4 · MOV · AVI · Máx 100MB",
+      "mockStep1": "Extração de áudio",
+      "mockStep2": "Reconhecimento de fala",
+      "mockStep3": "Tradução",
+      "mockStep4": "Geração de SRT",
+      "mockDone": "concluído",
+      "mockProcessing": "processando",
+      "mockPending": "pendente"
+    },
+    "howItWorks": { "label": "Como funciona", "title": "Geração de legendas em 3 etapas" },
+    "steps": [
+      { "title": "Fazer upload do vídeo", "desc": "Arraste e solte ou clique para fazer upload de arquivos MP4, MOV, AVI." },
+      { "title": "Processamento com IA", "desc": "Reconhece automaticamente a fala e a converte em texto de legendas preciso." },
+      { "title": "Baixar SRT", "desc": "Baixe instantaneamente o arquivo de legendas concluído no formato SRT." }
+    ],
+    "features": { "label": "Recursos", "title": "Por que escolher o Bako?" },
+    "featureItems": [
+      { "title": "Processamento rápido", "desc": "O processamento começa imediatamente após o upload para que você obtenha resultados rapidamente." },
+      { "title": "Alta precisão", "desc": "Reconhece com precisão vários idiomas e sotaques para gerar legendas naturais." },
+      { "title": "Formato SRT padrão", "desc": "Totalmente compatível com todas as ferramentas de edição de vídeo, incluindo Premiere, DaVinci e Final Cut Pro." },
+      { "title": "Cobrança por créditos", "desc": "Deduzido apenas pelo comprimento do vídeo usado. Use de forma flexível com base no uso, não por assinatura." },
+      { "title": "Suporte a vários formatos", "desc": "Suporta os principais formatos de vídeo, incluindo MP4, MOV e AVI. Até 100MB / 5 minutos." },
+      { "title": "Histórico de trabalhos", "desc": "Baixe listas de vídeos processados e arquivos SRT a qualquer momento." }
+    ],
+    "pricing": {
+      "label": "Preços",
+      "title": "Pague apenas o que usar",
+      "desc": "Sem assinatura. Carregue créditos e use-os quando precisar.",
+      "popular": "POPULAR",
+      "creditUnit": " min de créditos",
+      "buy": "Começar",
+      "planFeatures": [
+        ["10 min de créditos", "Todos os recursos básicos", "Legendas original + traduzida"],
+        ["30 min de créditos", "Todos os recursos", "Processamento prioritário"],
+        ["60 min de créditos", "Todos os recursos", "Processamento prioritário", "Processamento rápido"],
+        ["180 min de créditos", "Todos os recursos", "Processamento de prioridade máxima", "Arquivos grandes"],
+        ["600 min de créditos", "Todos os recursos incluídos", "Processamento de prioridade máxima", "Suporte dedicado"]
+      ]
+    },
+    "faq": { "label": "FAQ", "title": "Perguntas frequentes" },
+    "faqItems": [
+      { "q": "Quais idiomas são suportados?", "a": "Atualmente suporta reconhecimento de fala e tradução em vários idiomas, incluindo coreano, inglês, japonês, chinês, espanhol, francês, alemão e português." },
+      { "q": "Há um limite de tamanho de arquivo?", "a": "Até 100MB e uma duração máxima de vídeo de 5 minutos. Divida arquivos maiores antes de fazer o upload." },
+      { "q": "Suporta formatos de legendas diferentes do SRT?", "a": "Atualmente, apenas o formato SRT é suportado. Planejamos adicionar mais formatos como VTT e ASS no futuro." },
+      { "q": "Como carrego créditos?", "a": "Após fazer login, vá para a página de Créditos para selecionar e comprar seu pacote preferido." },
+      { "q": "E se eu não estiver satisfeito com a tradução?", "a": "Você pode abrir o arquivo SRT baixado em um editor de texto e editá-lo diretamente. O arquivo de legendas está em formato de texto simples." }
+    ],
+    "cta": {
+      "title": "Experimente",
+      "titleAccent": "a automação de legendas agora",
+      "desc": "Tudo que você precisa é de um vídeo. O Bako cuida do resto.",
+      "button": "Começar gratuitamente →"
+    },
+    "footer": {
+      "tagline": "Automação de legendas com IA",
+      "signin": "Entrar",
+      "signup": "Registrar",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

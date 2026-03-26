@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "Koreaans",
+    "en": "Engels",
+    "ja": "Japans",
+    "zh": "Chinees (vereenvoudigd)",
+    "es": "Spaans",
+    "fr": "Frans",
+    "de": "Duits",
+    "pt": "Portugees",
+    "ar": "Arabisch",
+    "da": "Deens",
+    "fi": "Fins",
+    "it": "Italiaans",
+    "nl": "Nederlands",
+    "pl": "Pools",
+    "sv": "Zweeds",
+    "tr": "Turks"
+  },
+  "theme": {
+    "toDark": "Schakel over naar donkere modus",
+    "toLight": "Schakel over naar lichte modus"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "myVideos": "Mijn video's",
+    "credits": "Credits",
+    "settings": "Instellingen",
+    "signOut": "Uitloggen",
+    "uiLanguage": "Interfacetaal"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Upload een video om automatisch ondertitels te genereren",
+    "balance": "Saldo: {{count}} min",
+    "dragDrop": "Slepen en neerzetten",
+    "uploadHint": "Upload videobestanden in MP4, MOV, AVI",
+    "uploadConstraints": "Max. bestandsgrootte: 100 MB · Max. duur: 5 minuten",
+    "browseFiles": "Bestanden bladeren",
+    "uploading": "Uploaden...",
+    "requiredCredits": "Vereiste credits",
+    "currentBalance": "Huidig saldo",
+    "targetLanguage": "Vertaaltaal",
+    "change": "Wijzigen",
+    "insufficientCredits": "Onvoldoende credits. U heeft nog {{count}} minuten nodig.",
+    "chargeCredits": "Credits bijvullen",
+    "startTranslation": "Vertaling starten",
+    "requestingTranslation": "Vertaling aanvragen...",
+    "minutes": "{{count}} min",
+    "processingProgress": "Verwerkingsvoortgang",
+    "steps": {
+      "audioExtract": "Audio-extractie",
+      "stt": "STT (Whisper)",
+      "translate": "Vertaling",
+      "srtBuild": "SRT-generatie"
+    },
+    "errors": {
+      "fileTooLarge": "Bestand overschrijdt 100 MB.",
+      "videoTooLong": "Video overschrijdt 5 minuten.",
+      "unsupportedFormat": "Niet-ondersteund bestandsformaat.",
+      "uploadFailed": "Upload mislukt.",
+      "translateFailed": "Vertaalverzoek mislukt."
+    }
+  },
+  "processing": {
+    "title": "Verwerken",
+    "job": "Taak #{{id}}",
+    "waitingInQueue": "WACHTEN IN WACHTRIJ...",
+    "queuePosition": "Positie in wachtrij",
+    "estimatedWait": "Geschatte wachttijd: {{time}}",
+    "closeWindowWarningQueue": "Het sluiten van het venster kan uw positie in de wachtrij verloren doen gaan.",
+    "processingTitle": "Verwerken...",
+    "overallProgress": "Totale voortgang",
+    "closeWindowWarning": "Sluit het venster niet totdat de verwerking is voltooid.",
+    "completed": "Voltooid!",
+    "redirecting": "Doorsturen naar resultaten...",
+    "failed": "Verwerking mislukt",
+    "failedError": "Er is een fout opgetreden tijdens de verwerking.",
+    "backToDashboard": "Terug naar dashboard",
+    "processingProgress": "Verwerkingsvoortgang",
+    "waitingStatus": "Wachten in wachtrij",
+    "analysisStatus": "Analyse en transcriptie"
+  },
+  "auth": {
+    "signInTitle": "Inloggen bij Bako",
+    "signUpTitle": "Maak uw account aan",
+    "withGoogle": "Doorgaan met Google",
+    "withApple": "Doorgaan met Apple",
+    "signUpWithGoogle": "Aanmelden met Google",
+    "signUpWithApple": "Aanmelden met Apple",
+    "processing": "Verwerken...",
+    "emailLabel": "E-mailadres",
+    "passwordLabel": "Wachtwoord",
+    "nicknameLabel": "Bijnaam",
+    "nicknamePlaceholder": "Uw weergavenaam",
+    "confirmPasswordLabel": "Wachtwoord bevestigen",
+    "signInBtn": "Inloggen",
+    "signingIn": "Inloggen...",
+    "signUpBtn": "Aanmelden",
+    "creatingAccount": "Account aanmaken...",
+    "newUser": "Nieuw bij Bako?",
+    "createAccount": "Maak een account aan",
+    "haveAccount": "Heeft u al een account?",
+    "signIn": "Inloggen",
+    "errors": {
+      "invalidCredential": "Onjuist e-mailadres of wachtwoord.",
+      "blocked": "Dit account is geblokkeerd.",
+      "tooManyRequests": "Te veel inlogpogingen. Probeer het later opnieuw.",
+      "googleFailed": "Google-login mislukt.",
+      "appleFailed": "Apple-login mislukt.",
+      "passwordMismatch": "Wachtwoorden komen niet overeen.",
+      "emailInUse": "Dit e-mailadres is al in gebruik.",
+      "weakPassword": "Wachtwoord moet minimaal 6 tekens bevatten.",
+      "invalidEmail": "Ongeldig e-mailadres.",
+      "signupFailed": "Aanmelden mislukt.",
+      "loginFailed": "Inloggen mislukt."
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "Inloggen",
+      "getStarted": "Gratis starten"
+    },
+    "hero": {
+      "badge": "✦ AI Automatische ondertitelgeneratie",
+      "title": "Upload uw video,",
+      "titleAccent": "ondertitels zijn klaar",
+      "desc": "Zonder complexe handelingen, upload gewoon uw videobestand en hoogwaardige SRT-ondertitelbestanden worden automatisch gegenereerd.",
+      "cta": "Gratis starten →",
+      "login": "Inloggen",
+      "mockDrag": "Sleep uw videobestand hier",
+      "mockHint": "MP4 · MOV · AVI · Max. 100 MB",
+      "mockStep1": "Audio-extractie",
+      "mockStep2": "Spraakherkenning",
+      "mockStep3": "Vertaling",
+      "mockStep4": "SRT-generatie",
+      "mockDone": "klaar",
+      "mockProcessing": "verwerken",
+      "mockPending": "wachten"
+    },
+    "howItWorks": {
+      "label": "Hoe het werkt",
+      "title": "Ondertitelgeneratie in 3 stappen"
+    },
+    "steps": [
+      { "title": "Video uploaden", "desc": "Slepen en neerzetten of klikken om MP4-, MOV-, AVI-bestanden te uploaden." },
+      { "title": "AI-verwerking", "desc": "Herkent automatisch spraak en converteert het naar nauwkeurige ondertiteltekst." },
+      { "title": "SRT downloaden", "desc": "Download direct het voltooide ondertitelbestand in SRT-formaat." }
+    ],
+    "features": {
+      "label": "Functies",
+      "title": "Waarom Bako kiezen?"
+    },
+    "featureItems": [
+      { "title": "Snelle verwerking", "desc": "Verwerking begint direct na het uploaden voor snelle resultaten." },
+      { "title": "Hoge nauwkeurigheid", "desc": "Herkent nauwkeurig verschillende talen en accenten voor natuurlijke ondertitels." },
+      { "title": "Standaard SRT-formaat", "desc": "Volledig compatibel met alle videobewerkingstools inclusief Premiere, DaVinci en Final Cut Pro." },
+      { "title": "Op credits gebaseerde facturering", "desc": "Alleen afgetrokken voor de gebruikte videolengte. Gebruik flexibel op basis van gebruik, niet abonnement." },
+      { "title": "Ondersteuning voor meerdere formaten", "desc": "Ondersteunt grote videoformaten inclusief MP4, MOV en AVI. Tot 100 MB / 5 minuten." },
+      { "title": "Werkgeschiedenis", "desc": "Download verwerkte videolijsten en SRT-bestanden op elk gewenst moment." }
+    ],
+    "pricing": {
+      "label": "Prijzen",
+      "title": "Betaal alleen voor wat u gebruikt",
+      "desc": "Geen abonnement. Laad credits op en gebruik ze wanneer nodig.",
+      "popular": "POPULAIR",
+      "creditUnit": " min credits",
+      "buy": "Beginnen",
+      "planFeatures": [
+        ["10 min credits", "Alle basisunfuncties", "Originele + vertaalde ondertitels"],
+        ["30 min credits", "Alle functies", "Prioriteitsverwerking"],
+        ["60 min credits", "Alle functies", "Prioriteitsverwerking", "Snelle verwerking"],
+        ["180 min credits", "Alle functies", "Hoogste prioriteit verwerking", "Grote bestanden"],
+        ["600 min credits", "Alle functies inbegrepen", "Hoogste prioriteit verwerking", "Toegewijde ondersteuning"]
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Veelgestelde vragen"
+    },
+    "faqItems": [
+      { "q": "Welke talen worden ondersteund?", "a": "Ondersteunt momenteel spraakherkenning en vertaling in verschillende talen waaronder Koreaans, Engels, Japans, Chinees, Spaans, Frans, Duits en Portugees." },
+      { "q": "Is er een bestandsgroottelimiet?", "a": "Tot 100 MB en een maximale videolengte van 5 minuten. Splits grotere bestanden voordat u ze uploadt." },
+      { "q": "Ondersteunt u andere ondertitelformaten dan SRT?", "a": "Momenteel wordt alleen SRT-formaat ondersteund. We zijn van plan meer formaten zoals VTT en ASS in de toekomst toe te voegen." },
+      { "q": "Hoe laad ik credits op?", "a": "Na het inloggen gaat u naar de Credits-pagina om uw gewenste pakket te selecteren en aan te schaffen." },
+      { "q": "Wat als ik niet tevreden ben met de vertaling?", "a": "U kunt het gedownloade SRT-bestand openen in een teksteditor en het direct bewerken. Het ondertitelbestand is in platte tekstindeling." }
+    ],
+    "cta": {
+      "title": "Ervaar",
+      "titleAccent": "ondertitelautomatisering nu",
+      "desc": "Alles wat u nodig heeft is een video. Bako doet de rest.",
+      "button": "Gratis starten →"
+    },
+    "footer": {
+      "tagline": "AI Ondertitelautomatisering",
+      "signin": "Inloggen",
+      "signup": "Aanmelden",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}

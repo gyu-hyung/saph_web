@@ -1,5 +1,8 @@
+import { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../store/authStore';
+import { LANGUAGES } from '../../i18n/languages';
 
 interface NavItem {
   path: string;
@@ -57,12 +60,33 @@ export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { member, logout } = useAuth();
+  const { t, i18n } = useTranslation();
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+
+  const switchLang = (lang: string) => {
+    i18n.changeLanguage(lang);
+    try { localStorage.setItem('ui-lang', lang); } catch {}
+    setLangOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const currentLang = LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
 
   const navItems: NavItem[] = [
-    { path: '/dashboard', label: 'Dashboard', icon: <HomeIcon /> },
-    { path: '/my-videos', label: 'My Videos', icon: <VideoIcon /> },
-    { path: '/credits', label: 'Credits', icon: <CreditIcon /> },
-    { path: '/settings', label: 'Settings', icon: <SettingsIcon /> },
+    { path: '/dashboard', label: t('sidebar.dashboard'), icon: <HomeIcon /> },
+    { path: '/my-videos', label: t('sidebar.myVideos'), icon: <VideoIcon /> },
+    { path: '/credits', label: t('sidebar.credits'), icon: <CreditIcon /> },
+    { path: '/settings', label: t('sidebar.settings'), icon: <SettingsIcon /> },
   ];
 
   const isActive = (path: string) => {
@@ -98,21 +122,7 @@ export default function Sidebar() {
             gap: '10px',
           }}
         >
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              background: 'var(--accent)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 700,
-              fontSize: '16px',
-            }}
-          >
-            S
-          </div>
+          <img src="/logo-sm.svg" alt="Bako" style={{ height: '28px' }} />
           <span style={{ fontWeight: 700, fontSize: '18px', letterSpacing: '-0.3px' }}>Bako</span>
         </div>
       </div>
@@ -193,6 +203,77 @@ export default function Sidebar() {
             </div>
           </div>
         )}
+        {/* UI Language Selector */}
+        <div ref={langRef} style={{ position: 'relative', marginBottom: '8px' }}>
+          <button
+            onClick={() => setLangOpen((o) => !o)}
+            style={{
+              width: '100%',
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '7px 10px',
+              borderRadius: '6px',
+              border: `1px solid ${langOpen ? 'var(--accent)' : 'var(--border)'}`,
+              background: langOpen ? 'var(--accent-light)' : 'transparent',
+              color: langOpen ? 'var(--accent)' : 'var(--text-secondary)',
+              fontSize: '12px', fontWeight: 600,
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+          >
+            <span style={{ fontSize: '16px', lineHeight: 1 }}>{currentLang.flag}</span>
+            <span style={{ flex: 1, textAlign: 'left' }}>{currentLang.nativeName}</span>
+            <svg
+              width="10" height="10" viewBox="0 0 10 10" fill="none"
+              style={{ flexShrink: 0, transition: 'transform 0.15s', transform: langOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+            >
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          {langOpen && (
+            <div
+              style={{
+                position: 'absolute', bottom: 'calc(100% + 6px)', left: 0, right: 0,
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                borderRadius: '10px', padding: '6px',
+                display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px',
+                boxShadow: '0 -8px 24px rgba(0,0,0,0.2)',
+                zIndex: 200,
+              }}
+            >
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => switchLang(lang.code)}
+                  title={lang.nativeName}
+                  style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
+                    padding: '7px 4px', borderRadius: '6px',
+                    border: `1px solid ${i18n.language === lang.code ? 'var(--accent)' : 'transparent'}`,
+                    background: i18n.language === lang.code ? 'var(--accent-light)' : 'transparent',
+                    color: i18n.language === lang.code ? 'var(--accent)' : 'var(--text-secondary)',
+                    fontSize: '10px', fontWeight: 600,
+                    cursor: 'pointer', transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (i18n.language !== lang.code) {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                      e.currentTarget.style.color = 'var(--text-primary)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (i18n.language !== lang.code) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = 'var(--text-secondary)';
+                    }
+                  }}
+                >
+                  <span style={{ fontSize: '18px', lineHeight: 1 }}>{lang.flag}</span>
+                  <span>{lang.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <button
           onClick={logout}
           style={{
@@ -217,7 +298,7 @@ export default function Sidebar() {
             e.currentTarget.style.borderColor = 'var(--border)';
           }}
         >
-          Sign out
+          {t('sidebar.signOut')}
         </button>
       </div>
     </aside>

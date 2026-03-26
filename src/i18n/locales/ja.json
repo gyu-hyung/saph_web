@@ -1,0 +1,201 @@
+{
+  "languages": {
+    "ko": "韓国語",
+    "en": "英語",
+    "ja": "日本語",
+    "zh": "中国語(簡体字)",
+    "es": "スペイン語",
+    "fr": "フランス語",
+    "de": "ドイツ語",
+    "pt": "ポルトガル語",
+    "ar": "アラビア語",
+    "da": "デンマーク語",
+    "fi": "フィンランド語",
+    "it": "イタリア語",
+    "nl": "オランダ語",
+    "pl": "ポーランド語",
+    "sv": "スウェーデン語",
+    "tr": "トルコ語"
+  },
+  "theme": {
+    "toDark": "ダークモードに切り替え",
+    "toLight": "ライトモードに切り替え"
+  },
+  "sidebar": {
+    "dashboard": "ダッシュボード",
+    "myVideos": "マイビデオ",
+    "credits": "クレジット",
+    "settings": "設定",
+    "signOut": "サインアウト",
+    "uiLanguage": "UI言語"
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "subtitle": "字幕を生成する動画をアップロードしてください",
+    "balance": "残高: {{count}}分",
+    "dragDrop": "ドラッグ＆ドロップ",
+    "uploadHint": "MP4、MOV、AVI動画ファイルをアップロード",
+    "uploadConstraints": "最大ファイルサイズ: 100MB・最大長: 5分",
+    "browseFiles": "ファイルを選択",
+    "uploading": "アップロード中...",
+    "requiredCredits": "必要クレジット",
+    "currentBalance": "現在の残高",
+    "targetLanguage": "翻訳言語",
+    "change": "変更",
+    "insufficientCredits": "クレジットが不足しています。あと{{count}}分必要です。",
+    "chargeCredits": "クレジットを充電",
+    "startTranslation": "翻訳を開始",
+    "requestingTranslation": "翻訳をリクエスト中...",
+    "minutes": "{{count}}分",
+    "processingProgress": "処理進行状況",
+    "steps": {
+      "audioExtract": "音声抽出",
+      "stt": "STT (Whisper)",
+      "translate": "翻訳",
+      "srtBuild": "SRT生成"
+    },
+    "errors": {
+      "fileTooLarge": "ファイルが100MBを超えています。",
+      "videoTooLong": "動画が5分を超えています。",
+      "unsupportedFormat": "サポートされていないファイル形式です。",
+      "uploadFailed": "アップロードに失敗しました。",
+      "translateFailed": "翻訳リクエストに失敗しました。"
+    }
+  },
+  "processing": {
+    "title": "処理中",
+    "job": "ジョブ #{{id}}",
+    "waitingInQueue": "キュー待機中...",
+    "queuePosition": "キュー位置",
+    "estimatedWait": "推定待ち時間: {{time}}",
+    "closeWindowWarningQueue": "ウィンドウを閉じるとキュー順位を失う可能性があります。",
+    "processingTitle": "処理中...",
+    "overallProgress": "全体進行状況",
+    "closeWindowWarning": "処理が完了するまでウィンドウを閉じないでください。",
+    "completed": "完了！",
+    "redirecting": "結果画面に移動します...",
+    "failed": "処理失敗",
+    "failedError": "処理中にエラーが発生しました。",
+    "backToDashboard": "ダッシュボードに戻る",
+    "processingProgress": "処理進行状況",
+    "waitingStatus": "キュー待機中",
+    "analysisStatus": "分析と文字起こし"
+  },
+  "auth": {
+    "signInTitle": "Bakoにサインイン",
+    "signUpTitle": "アカウントを作成",
+    "withGoogle": "Googleで続ける",
+    "withApple": "Appleで続ける",
+    "signUpWithGoogle": "Googleで登録",
+    "signUpWithApple": "Appleで登録",
+    "processing": "処理中...",
+    "emailLabel": "メールアドレス",
+    "passwordLabel": "パスワード",
+    "nicknameLabel": "ニックネーム",
+    "nicknamePlaceholder": "表示名",
+    "confirmPasswordLabel": "パスワード確認",
+    "signInBtn": "サインイン",
+    "signingIn": "サインイン中...",
+    "signUpBtn": "登録",
+    "creatingAccount": "アカウント作成中...",
+    "newUser": "Bakoが初めての方？",
+    "createAccount": "アカウントを作成",
+    "haveAccount": "すでにアカウントをお持ちですか？",
+    "signIn": "サインイン",
+    "errors": {
+      "invalidCredential": "メールアドレスまたはパスワードが正しくありません。",
+      "blocked": "ブロックされたアカウントです。",
+      "tooManyRequests": "ログイン試行が多すぎます。しばらく後でもう一度お試しください。",
+      "googleFailed": "Googleログインに失敗しました。",
+      "appleFailed": "Appleログインに失敗しました。",
+      "passwordMismatch": "パスワードが一致しません。",
+      "emailInUse": "このメールアドレスはすでに使用されています。",
+      "weakPassword": "パスワードは6文字以上である必要があります。",
+      "invalidEmail": "無効なメールアドレスです。",
+      "signupFailed": "アカウント作成に失敗しました。",
+      "loginFailed": "ログインに失敗しました。"
+    }
+  },
+  "landing": {
+    "nav": {
+      "signin": "サインイン",
+      "getStarted": "無料で始める"
+    },
+    "hero": {
+      "badge": "✦ AI字幕自動生成サービス",
+      "title": "動画をアップロードすると、",
+      "titleAccent": "字幕が完成します",
+      "desc": "複雑な作業なしに、動画ファイルをアップロードするだけで高品質なSRT字幕ファイルが自動的に生成されます。",
+      "cta": "無料で始める →",
+      "login": "サインイン",
+      "mockDrag": "動画ファイルをここにドラッグ",
+      "mockHint": "MP4 · MOV · AVI · 最大100MB",
+      "mockStep1": "音声抽出",
+      "mockStep2": "音声認識",
+      "mockStep3": "翻訳",
+      "mockStep4": "SRT生成",
+      "mockDone": "完了",
+      "mockProcessing": "処理中",
+      "mockPending": "待機中"
+    },
+    "howItWorks": {
+      "label": "How it works",
+      "title": "3ステップで字幕生成"
+    },
+    "steps": [
+      { "title": "動画をアップロード", "desc": "MP4、MOV、AVIファイルをドラッグ&ドロップまたはクリックでアップロードしてください。" },
+      { "title": "AI自動処理", "desc": "音声を自動認識し、正確な字幕テキストに変換します。" },
+      { "title": "SRTダウンロード", "desc": "完成した字幕ファイルをSRT形式ですぐにダウンロードしてください。" }
+    ],
+    "features": {
+      "label": "Features",
+      "title": "Bakoが選ばれる理由"
+    },
+    "featureItems": [
+      { "title": "高速処理", "desc": "アップロード後すぐに自動処理が開始されるため、短時間で結果を受け取れます。" },
+      { "title": "高精度", "desc": "さまざまな言語とアクセントを正確に認識し、自然な字幕を生成します。" },
+      { "title": "標準SRT形式", "desc": "Premiere、DaVinci、Final Cut Proなど、すべての動画編集ツールと完全に互換性があります。" },
+      { "title": "クレジット制課金", "desc": "使用した動画の長さだけが差し引かれます。サブスクリプションではなく使用量に基づいて柔軟にご利用ください。" },
+      { "title": "複数フォーマット対応", "desc": "MP4、MOV、AVIなどの主要な動画フォーマットをサポートしています。最大100MB/5分。" },
+      { "title": "作業履歴管理", "desc": "処理した動画リストとSRTファイルをいつでもダウンロードできます。" }
+    ],
+    "pricing": {
+      "label": "Pricing",
+      "title": "使った分だけお支払い",
+      "desc": "サブスクリプションなし。クレジットをチャージして必要なときにご利用ください。",
+      "popular": "人気",
+      "creditUnit": "分クレジット",
+      "buy": "始める",
+      "planFeatures": [
+        ["10分クレジット", "すべての基本機能", "原文+翻訳字幕"],
+        ["30分クレジット", "すべての機能", "優先処理"],
+        ["60分クレジット", "すべての機能", "優先処理", "高速処理"],
+        ["180分クレジット", "すべての機能", "最優先処理", "大容量ファイル"],
+        ["600分クレジット", "すべての機能", "最優先処理", "専用サポート"]
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "よくある質問"
+    },
+    "faqItems": [
+      { "q": "どの言語をサポートしていますか？", "a": "現在、韓国語、英語、日本語、中国語、スペイン語、フランス語、ドイツ語、ポルトガル語など多様な言語の音声認識と翻訳をサポートしています。" },
+      { "q": "ファイルサイズの制限はありますか？", "a": "最大100MB、動画の長さは最大5分までサポートしています。より大きなファイルは分割してアップロードしてください。" },
+      { "q": "SRT以外の字幕形式もサポートしていますか？", "a": "現在はSRT形式のみサポートしています。今後VTT、ASSなどのさまざまな形式を追加する予定です。" },
+      { "q": "クレジットはどのように充電しますか？", "a": "ログイン後、クレジットページで希望のパッケージを選択して購入できます。" },
+      { "q": "翻訳結果が満足いかない場合はどうすればいいですか？", "a": "ダウンロードしたSRTファイルをテキストエディタで開いて直接編集できます。字幕ファイルはプレーンテキスト形式です。" }
+    ],
+    "cta": {
+      "title": "今すぐ",
+      "titleAccent": "字幕自動化を体験しよう",
+      "desc": "動画があれば十分です。残りはBakoが処理します。",
+      "button": "無料で始める →"
+    },
+    "footer": {
+      "tagline": "AI字幕自動化サービス",
+      "signin": "サインイン",
+      "signup": "会員登録",
+      "copyright": "© 2026 Bako"
+    }
+  }
+}
