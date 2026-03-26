@@ -59,14 +59,14 @@ export default function Sidebar() {
   const { member, logout } = useAuth();
 
   const navItems: NavItem[] = [
-    { path: '/', label: 'Dashboard', icon: <HomeIcon /> },
+    { path: '/dashboard', label: 'Dashboard', icon: <HomeIcon /> },
     { path: '/my-videos', label: 'My Videos', icon: <VideoIcon /> },
     { path: '/credits', label: 'Credits', icon: <CreditIcon /> },
     { path: '/settings', label: 'Settings', icon: <SettingsIcon /> },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/') return location.pathname === '/';
+    if (path === '/dashboard') return location.pathname === '/dashboard';
     return location.pathname.startsWith(path);
   };
 
@@ -89,7 +89,7 @@ export default function Sidebar() {
           padding: '0 24px 32px',
           cursor: 'pointer',
         }}
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/dashboard')}
       >
         <div
           style={{
@@ -113,7 +113,7 @@ export default function Sidebar() {
           >
             S
           </div>
-          <span style={{ fontWeight: 700, fontSize: '18px', letterSpacing: '-0.3px' }}>Saph</span>
+          <span style={{ fontWeight: 700, fontSize: '18px', letterSpacing: '-0.3px' }}>Bako</span>
         </div>
       </div>
 

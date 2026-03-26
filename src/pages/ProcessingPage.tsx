@@ -509,7 +509,7 @@ export default function ProcessingPage() {
                   {errorMessage}
                 </p>
                 <button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/dashboard')}
                   style={{
                     padding: '12px 32px',
                     background: 'var(--accent)',

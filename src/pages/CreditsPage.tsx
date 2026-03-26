@@ -82,7 +82,7 @@ export default function CreditsPage() {
         }}
       >
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: 700 }}>Saph Credit Management</h1>
+          <h1 style={{ fontSize: '22px', fontWeight: 700 }}>Bako Credit Management</h1>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
             크레딧을 구매하여 영상 번역 서비스를 이용하세요
           </p>

@@ -16,7 +16,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (member) {
-      navigate('/', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
   }, [member, navigate]);
 
@@ -32,7 +32,7 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       await signupWithEmail(email, password, nickname);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: unknown) {
       const firebaseError = err as { code?: string; message?: string; response?: { data?: { code?: string } } };
       const apiCode = firebaseError.response?.data?.code;
@@ -63,7 +63,7 @@ export default function SignupPage() {
     setSocialLoading('google');
     try {
       await loginWithGoogle();
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: unknown) {
       const firebaseError = err as { code?: string };
       if (firebaseError.code !== 'auth/popup-closed-by-user') {
@@ -79,7 +79,7 @@ export default function SignupPage() {
     setSocialLoading('apple');
     try {
       await loginWithApple();
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: unknown) {
       const firebaseError = err as { code?: string };
       if (firebaseError.code !== 'auth/popup-closed-by-user') {
@@ -202,7 +202,7 @@ export default function SignupPage() {
             >
               S
             </div>
-            <span style={{ fontWeight: 700, fontSize: '22px' }}>Saph</span>
+            <span style={{ fontWeight: 700, fontSize: '22px' }}>Bako</span>
           </div>
           <h1
             style={{

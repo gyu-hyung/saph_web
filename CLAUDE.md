@@ -26,7 +26,7 @@ npm run dev    # 포트 5173 (개발)
 | `/result/:jobId` | 결과 플레이어 | 영상 재생 + 자막 토글 + SRT 다운로드 |
 | `/login`, `/signup` | 인증 | 이메일/비밀번호 |
 
-목업 이미지: `../../docs/saph_ui_mockup_*.png` (업로드/플레이어/결제 팝업/영상 라이브러리)
+목업 이미지: `../../docs/bako_ui_mockup_*.png` (업로드/플레이어/결제 팝업/영상 라이브러리)
 
 ---
 

@@ -122,7 +122,7 @@ export default function MyVideosPage() {
             <option value="name">Sort: Name</option>
           </select>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/dashboard')}
             style={{
               padding: '10px 20px',
               background: 'var(--accent)',
@@ -213,7 +213,7 @@ export default function MyVideosPage() {
               </p>
             </div>
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/dashboard')}
               style={{
                 padding: '12px 28px',
                 background: 'var(--accent)',

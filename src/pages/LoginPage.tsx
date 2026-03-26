@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (member) {
-      navigate('/', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
   }, [member, navigate]);
 
@@ -24,7 +24,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await loginWithEmail(email, password);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: unknown) {
       const firebaseError = err as { code?: string; message?: string };
       switch (firebaseError.code) {
@@ -198,7 +198,7 @@ export default function LoginPage() {
             >
               S
             </div>
-            <span style={{ fontWeight: 700, fontSize: '22px' }}>Saph</span>
+            <span style={{ fontWeight: 700, fontSize: '22px' }}>Bako</span>
           </div>
           <h1
             style={{
@@ -208,7 +208,7 @@ export default function LoginPage() {
               marginTop: '16px',
             }}
           >
-            Sign in to Saph
+            Sign in to Bako
           </h1>
         </div>
 
@@ -406,7 +406,7 @@ export default function LoginPage() {
             color: 'var(--text-secondary)',
           }}
         >
-          New to Saph?{' '}
+          New to Bako?{' '}
           <Link
             to="/signup"
             style={{ color: 'var(--accent)', fontWeight: 500 }}
