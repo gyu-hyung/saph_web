@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import type { SubtitleEntry } from '../../utils/srtParser';
 import { formatTimeShort } from '../../utils/formatTime';
 
@@ -7,51 +7,58 @@ interface Props {
   durationMs: number;
   currentTimeMs: number;
   onSeek: (ms: number) => void;
+  onEntryUpdate: (entryIndex: number, field: 'startMs' | 'endMs', value: number) => void;
   videoRef: React.RefObject<HTMLVideoElement | null>;
 }
 
-const RULER_H = 20;
-const TRACK_H = 44;
-const TOTAL_H = RULER_H + TRACK_H + 12; // 76px
-const PX_PER_SEC = 60;
-const PX_PER_MS = PX_PER_SEC / 1000;
+const RULER_H = 28;
+const TRACK_H = 56;
+const TOTAL_H = RULER_H + TRACK_H + 12;
 
-export default function Timeline({ entries, durationMs, currentTimeMs, onSeek, videoRef }: Props) {
+function getTickInterval(durationMs: number): number {
+  const durationSec = durationMs / 1000;
+  if (durationSec <= 30) return 5000;
+  if (durationSec <= 120) return 10000;
+  if (durationSec <= 300) return 30000;
+  return 60000;
+}
+
+export default function Timeline({ entries, durationMs, currentTimeMs, onSeek, onEntryUpdate, videoRef }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const currentTimeMsRef = useRef(currentTimeMs);
-  currentTimeMsRef.current = currentTimeMs;
+  const isDragging = useRef(false);
+  const isEdgeDragging = useRef(false);
+
+  const msFromClientX = useCallback((clientX: number): number => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return 0;
+    const ratio = (clientX - rect.left) / rect.width;
+    return Math.max(0, Math.min(durationMs, Math.round(ratio * durationMs)));
+  }, [durationMs]);
+
+  const seekFromClientX = useCallback((clientX: number) => {
+    onSeek(msFromClientX(clientX));
+  }, [msFromClientX, onSeek]);
 
   if (durationMs <= 0) return null;
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  /* Track mousedown → continuous drag-to-seek (playhead follows mouse direction) */
+  const handleContainerMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isEdgeDragging.current) return;
+    const target = e.target as HTMLElement;
+    if (target.closest('[data-role="playhead"]')) return;
+    if (target.closest('[data-role="edge"]')) return;
+
     e.preventDefault();
-    const startX = e.clientX;
-    const startTime = currentTimeMsRef.current;
+    isDragging.current = true;
+    seekFromClientX(e.clientX);
 
     const video = videoRef.current;
     const wasPlaying = video ? !video.paused : false;
     if (wasPlaying) video?.pause();
 
-    let hasDragged = false;
-
-    const onMouseMove = (ev: MouseEvent) => {
-      hasDragged = true;
-      // drag right = forward in time
-      const deltaX = ev.clientX - startX;
-      const seekMs = startTime + deltaX / PX_PER_MS;
-      onSeek(Math.max(0, Math.min(durationMs, Math.round(seekMs))));
-    };
-
-    const onMouseUp = (ev: MouseEvent) => {
-      if (!hasDragged) {
-        // click: seek to absolute position relative to fixed playhead
-        const rect = containerRef.current?.getBoundingClientRect();
-        if (rect) {
-          const offsetPx = ev.clientX - rect.left - rect.width / 2;
-          const seekMs = startTime + offsetPx / PX_PER_MS;
-          onSeek(Math.max(0, Math.min(durationMs, Math.round(seekMs))));
-        }
-      }
+    const onMouseMove = (ev: MouseEvent) => seekFromClientX(ev.clientX);
+    const onMouseUp = () => {
+      isDragging.current = false;
       if (wasPlaying) video?.play();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
@@ -61,180 +68,258 @@ export default function Timeline({ entries, durationMs, currentTimeMs, onSeek, v
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  // 1-second ticks
-  const ticks: number[] = [];
-  for (let t = 0; t <= durationMs; t += 1000) {
-    ticks.push(t);
-  }
+  /* Playhead drag */
+  const handlePlayheadMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    isDragging.current = true;
 
-  // Scrolling offset: currentTime position moves to center (50%)
-  const contentOffsetPx = currentTimeMs * PX_PER_MS;
-  const contentWidthPx = durationMs * PX_PER_MS + 600; // extra padding on both sides
+    const video = videoRef.current;
+    const wasPlaying = video ? !video.paused : false;
+    if (wasPlaying) video?.pause();
+
+    const onMouseMove = (ev: MouseEvent) => seekFromClientX(ev.clientX);
+    const onMouseUp = () => {
+      isDragging.current = false;
+      if (wasPlaying) video?.play();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
+  /* Edge drag — resize subtitle block start/end */
+  const handleEdgeMouseDown = (
+    e: React.MouseEvent,
+    entryIndex: number,
+    field: 'startMs' | 'endMs',
+    entry: SubtitleEntry,
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    isEdgeDragging.current = true;
+
+    const onMouseMove = (ev: MouseEvent) => {
+      const ms = msFromClientX(ev.clientX);
+      if (field === 'startMs') {
+        onEntryUpdate(entryIndex, 'startMs', Math.max(0, Math.min(entry.endMs - 100, ms)));
+      } else {
+        onEntryUpdate(entryIndex, 'endMs', Math.min(durationMs, Math.max(entry.startMs + 100, ms)));
+      }
+    };
+
+    const onMouseUp = () => {
+      isEdgeDragging.current = false;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
+  const tickInterval = getTickInterval(durationMs);
+  const ticks: number[] = [];
+  for (let t = 0; t <= durationMs; t += tickInterval) ticks.push(t);
+
+  const pct = (ms: number) => `${(ms / durationMs) * 100}%`;
+  const playheadPct = (currentTimeMs / durationMs) * 100;
 
   return (
     <div
-      ref={containerRef}
-      onMouseDown={handleMouseDown}
       style={{
         height: `${TOTAL_H}px`,
-        borderTop: '1px solid #1e1e1e',
-        background: '#0d0d0d',
+        borderTop: '1px solid var(--border)',
+        background: 'var(--bg-card)',
         position: 'relative',
         userSelect: 'none',
         flexShrink: 0,
-        overflow: 'hidden',
-        cursor: 'crosshair',
+        padding: '6px 0',
       }}
     >
-      {/* Scrolling content: moves so that currentTime sits at 50% */}
       <div
+        ref={containerRef}
+        onMouseDown={handleContainerMouseDown}
         style={{
-          position: 'absolute',
-          // 300px left padding so t=0 can appear left of center
-          left: `calc(50% - ${contentOffsetPx + 300}px)`,
-          top: 0,
-          width: `${contentWidthPx}px`,
-          height: '100%',
-          pointerEvents: 'none',
+          position: 'relative',
+          height: `${RULER_H + TRACK_H}px`,
+          margin: '0 16px',
+          cursor: 'crosshair',
         }}
       >
-        {/* Ruler */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 4,
-            left: 0,
-            right: 0,
-            height: `${RULER_H}px`,
-          }}
-        >
-          {ticks.map((t) => (
-            <div
-              key={t}
+        {/* Ruler ticks */}
+        {ticks.map((t) => (
+          <div
+            key={t}
+            style={{
+              position: 'absolute',
+              left: pct(t),
+              top: 0,
+              height: `${RULER_H}px`,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <span
               style={{
-                position: 'absolute',
-                left: `${t * PX_PER_MS + 300}px`,
-                top: 0,
-                height: `${RULER_H}px`,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                fontSize: '10px',
+                color: 'var(--text-muted)',
+                transform: 'translateX(-50%)',
+                whiteSpace: 'nowrap',
               }}
             >
-              <span
-                style={{
-                  fontSize: '10px',
-                  color: '#555',
-                  transform: 'translateX(-50%)',
-                  whiteSpace: 'nowrap',
-                  lineHeight: 1,
-                  fontFamily: 'monospace',
-                }}
-              >
-                {formatTimeShort(t)}
-              </span>
-              <div style={{ width: '1px', height: '6px', background: '#2a2a2a', marginTop: '2px' }} />
-            </div>
-          ))}
-        </div>
+              {formatTimeShort(t)}
+            </span>
+            <div style={{ width: '1px', flex: 1, background: 'var(--border)' }} />
+          </div>
+        ))}
 
-        {/* Track area */}
+        {/* Subtitle track */}
         <div
           style={{
             position: 'absolute',
-            top: RULER_H + 4,
+            top: `${RULER_H}px`,
             left: 0,
             right: 0,
             height: `${TRACK_H}px`,
+            borderRadius: '4px',
+            background: 'rgba(255,255,255,0.03)',
           }}
         >
           {entries.map((entry) => {
             const isActive = currentTimeMs >= entry.startMs && currentTimeMs <= entry.endMs;
-            const blockWidth = Math.max((entry.endMs - entry.startMs) * PX_PER_MS, 2);
+            const startTime = formatTimeShort(entry.startMs);
+            const endTime = formatTimeShort(entry.endMs);
             const textPreview = entry.text.split('\n')[0];
-
             return (
               <div
                 key={entry.index}
                 style={{
                   position: 'absolute',
-                  left: `${entry.startMs * PX_PER_MS + 300}px`,
-                  width: `${blockWidth}px`,
-                  top: '2px',
-                  height: `${TRACK_H - 4}px`,
-                  background: isActive ? '#2563eb' : '#1a3356',
-                  border: `1px solid ${isActive ? '#3b82f6' : '#243e6a'}`,
+                  left: pct(entry.startMs),
+                  width: pct(entry.endMs - entry.startMs),
+                  top: '4px',
+                  height: `${TRACK_H - 8}px`,
+                  background: isActive ? 'rgba(124, 58, 237, 0.6)' : 'rgba(99, 102, 241, 0.25)',
+                  border: '1px dashed rgba(255,255,255,0.2)',
                   borderRadius: '3px',
+                  transition: 'background 0.1s',
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '2px 4px',
-                  boxSizing: 'border-box',
-                  transition: 'background 0.1s, border-color 0.1s',
                 }}
               >
-                <span
+                {/* Left edge handle */}
+                <div
+                  data-role="edge"
+                  onMouseDown={(e) => handleEdgeMouseDown(e, entry.index, 'startMs', entry)}
                   style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: '6px',
+                    cursor: 'ew-resize',
+                    zIndex: 1,
+                    background: 'transparent',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(124, 58, 237, 0.5)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                />
+                {/* Right edge handle */}
+                <div
+                  data-role="edge"
+                  onMouseDown={(e) => handleEdgeMouseDown(e, entry.index, 'endMs', entry)}
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: '6px',
+                    cursor: 'ew-resize',
+                    zIndex: 1,
+                    background: 'transparent',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(124, 58, 237, 0.5)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                />
+
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '3px',
                     fontSize: '9px',
-                    color: isActive ? '#fff' : '#7aa8e0',
-                    fontWeight: 700,
-                    lineHeight: 1.3,
-                    whiteSpace: 'nowrap',
+                    color: isActive ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.5)',
+                    fontWeight: 500,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
                   }}
                 >
-                  {entry.index}
-                </span>
-                {blockWidth > 28 && (
-                  <span
-                    style={{
-                      fontSize: '9px',
-                      color: isActive ? 'rgba(255,255,255,0.85)' : 'rgba(122,168,224,0.7)',
-                      lineHeight: 1.3,
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {textPreview}
-                  </span>
-                )}
+                  <span style={{ fontWeight: 700 }}>{entry.index}</span>
+                  <span>{startTime}</span>
+                  <span>–</span>
+                  <span>{endTime}</span>
+                </div>
+                <div
+                  style={{
+                    fontSize: '9px',
+                    color: 'rgba(255,255,255,0.6)',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {textPreview}
+                </div>
               </div>
             );
           })}
         </div>
-      </div>
 
-      {/* Fixed red playhead at center */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 0,
-          bottom: 0,
-          width: '2px',
-          transform: 'translateX(-50%)',
-          background: '#ef4444',
-          pointerEvents: 'none',
-          zIndex: 10,
-          boxShadow: '0 0 6px rgba(239,68,68,0.35)',
-        }}
-      >
-        {/* Triangle handle at top */}
+        {/* Playhead */}
         <div
+          data-role="playhead"
+          onMouseDown={handlePlayheadMouseDown}
           style={{
             position: 'absolute',
-            top: 2,
-            left: '50%',
+            left: `${playheadPct}%`,
+            top: 0,
+            bottom: 0,
+            width: '16px',
             transform: 'translateX(-50%)',
-            width: 0,
-            height: 0,
-            borderLeft: '5px solid transparent',
-            borderRight: '5px solid transparent',
-            borderTop: '7px solid #ef4444',
+            cursor: 'grab',
+            zIndex: 2,
+            display: 'flex',
+            justifyContent: 'center',
           }}
-        />
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              width: '10px',
+              height: '10px',
+              borderRadius: '50%',
+              background: '#ffffff',
+              transform: 'translateX(-50%)',
+              left: '50%',
+              boxShadow: '0 0 4px rgba(0,0,0,0.6)',
+            }}
+          />
+          <div
+            style={{
+              width: '2px',
+              height: '100%',
+              background: '#ffffff',
+              boxShadow: '0 0 4px rgba(0,0,0,0.5)',
+            }}
+          />
+        </div>
       </div>
     </div>
   );

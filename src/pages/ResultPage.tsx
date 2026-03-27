@@ -207,6 +207,29 @@ export default function ResultPage() {
     }
   };
 
+  const handleEntryUpdate = (entryIndex: number, field: 'startMs' | 'endMs', value: number) => {
+    const actualValue = value - subtitleSettings.offsetMs;
+    const updateEntries = (entries: SubtitleEntry[]) =>
+      entries.map((e) => (e.index === entryIndex ? { ...e, [field]: actualValue } : e));
+
+    setOriginalSubs((prev) => updateEntries(prev));
+    setTranslatedSubs((prev) => updateEntries(prev));
+    setDualSubs((prev) => updateEntries(prev));
+  };
+
+  const handleTranslatedTextChange = (entryIndex: number, newText: string) => {
+    setTranslatedSubs((prev) =>
+      prev.map((e) => (e.index === entryIndex ? { ...e, text: newText } : e)),
+    );
+    setDualSubs((prev) =>
+      prev.map((e) => {
+        if (e.index !== entryIndex) return e;
+        const lines = e.text.split('\n');
+        return { ...e, text: lines[0] + '\n' + newText };
+      }),
+    );
+  };
+
   const handleDownload = async (type: 'original' | 'translated' | 'dual') => {
     if (!jobId) return;
     try {
@@ -393,9 +416,11 @@ export default function ResultPage() {
           }}
         >
           <SubtitleList
-            entries={activeEntries}
+            originalEntries={applyOffset(originalSubs, subtitleSettings.offsetMs)}
+            translatedEntries={applyOffset(translatedSubs, subtitleSettings.offsetMs)}
             currentTimeMs={currentTimeMs}
             onSeek={handleSeek}
+            onTranslatedTextChange={handleTranslatedTextChange}
           />
         </div>
 
@@ -526,6 +551,7 @@ style={{
         durationMs={videoDuration}
         currentTimeMs={currentTimeMs}
         onSeek={handleSeek}
+        onEntryUpdate={handleEntryUpdate}
         videoRef={videoRef}
       />
 
