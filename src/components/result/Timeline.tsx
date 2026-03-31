@@ -59,7 +59,8 @@ export default function Timeline({ entries, durationMs, currentTimeMs, onSeek, o
     const onMouseMove = (ev: MouseEvent) => seekFromClientX(ev.clientX);
     const onMouseUp = () => {
       isDragging.current = false;
-      if (wasPlaying) video?.play();
+      if (wasPlaying) video?.play().catch((e) => { if (e.name !== 'AbortError') throw e; });
+
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };

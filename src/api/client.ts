@@ -93,6 +93,9 @@ export const videoApi = {
 
   getJobs: () => apiClient.get<ApiResponse<Job[]>>('/api/jobs'),
 
+  retryJob: (jobId: number) =>
+    apiClient.post<ApiResponse<TranslateResult>>(`/api/video/retry/${jobId}`),
+
   fetchSrt: (jobId: number | string, type: 'original' | 'translated' | 'dual') =>
     apiClient.get<string>(videoApi.getResultUrl(jobId, type), { responseType: 'text' }),
 };

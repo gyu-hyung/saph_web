@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { videoApi } from '../api/client';
 import type { Job } from '../types';
+
+const ACTIVE_STATUSES: Job['status'][] = ['CREATED', 'QUEUED', 'PROCESSING'];
+const POLL_INTERVAL_MS = 5000;
 
 type SortOption = 'newest' | 'oldest' | 'name';
 
@@ -52,16 +55,46 @@ export default function MyVideosPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
+  const [retryingJobIds, setRetryingJobIds] = useState<Set<number>>(new Set());
   const navigate = useNavigate();
+  const pollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const fetchJobs = (showLoading = false) => {
+    if (showLoading) setIsLoading(true);
+    return videoApi
+      .getJobs()
+      .then((res) => {
+        setJobs(res.data.data);
+        return res.data.data;
+      })
+      .catch(() => setError('영상 목록을 불러오는 데 실패했습니다.'))
+      .finally(() => { if (showLoading) setIsLoading(false); });
+  };
 
   useEffect(() => {
-    setIsLoading(true);
-    videoApi
-      .getJobs()
-      .then((res) => setJobs(res.data.data))
-      .catch(() => setError('영상 목록을 불러오는 데 실패했습니다.'))
-      .finally(() => setIsLoading(false));
+    fetchJobs(true);
   }, []);
+
+  // 처리 중인 job이 있으면 5초마다 폴링
+  useEffect(() => {
+    const hasActive = jobs.some((j) => ACTIVE_STATUSES.includes(j.status));
+
+    if (pollTimerRef.current) {
+      clearTimeout(pollTimerRef.current);
+      pollTimerRef.current = null;
+    }
+
+    if (hasActive) {
+      pollTimerRef.current = setTimeout(() => fetchJobs(false), POLL_INTERVAL_MS);
+    }
+
+    return () => {
+      if (pollTimerRef.current) {
+        clearTimeout(pollTimerRef.current);
+        pollTimerRef.current = null;
+      }
+    };
+  }, [jobs]);
 
   const sortedJobs = [...jobs].sort((a, b) => {
     if (sortBy === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -75,6 +108,30 @@ export default function MyVideosPage() {
       navigate(`/result/${job.jobId}`);
     } else if (job.status === 'PROCESSING' || job.status === 'QUEUED' || job.status === 'CREATED') {
       navigate(`/processing/${job.jobId}`);
+    }
+  };
+
+  const handleRetry = async (e: React.MouseEvent, job: Job) => {
+    e.stopPropagation();
+    if (retryingJobIds.has(job.jobId)) return;
+
+    setRetryingJobIds((prev) => new Set(prev).add(job.jobId));
+    try {
+      const res = await videoApi.retryJob(job.jobId);
+      const newJobId = res.data.data.jobId;
+      await fetchJobs(false);
+      navigate(`/processing/${newJobId}`);
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+        '재시도에 실패했습니다. 잠시 후 다시 시도해주세요.';
+      alert(msg);
+    } finally {
+      setRetryingJobIds((prev) => {
+        const next = new Set(prev);
+        next.delete(job.jobId);
+        return next;
+      });
     }
   };
 
@@ -290,17 +347,98 @@ export default function MyVideosPage() {
                           fontWeight: 600,
                           color: cfg.color,
                           background: cfg.bg,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px',
                         }}
                       >
+                        {ACTIVE_STATUSES.includes(job.status) && (
+                          <span
+                            style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: cfg.color,
+                              animation: 'pulse 1.4s ease-in-out infinite',
+                              flexShrink: 0,
+                            }}
+                          />
+                        )}
                         {cfg.label}
                       </span>
+                      <style>{`@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }`}</style>
                       <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                         {formatDuration(job.durationSec)}
                       </span>
                     </div>
-                    <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                    <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: job.status === 'FAILED' ? '10px' : '0' }}>
                       {formatDate(job.createdAt)}
                     </p>
+                    {job.status === 'FAILED' && (
+                      <>
+                        {job.errorMessage && (
+                          <p
+                            style={{
+                              fontSize: '11px',
+                              color: 'var(--error)',
+                              marginBottom: '10px',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                            title={job.errorMessage}
+                          >
+                            {job.errorMessage}
+                          </p>
+                        )}
+                        <button
+                          onClick={(e) => handleRetry(e, job)}
+                          disabled={retryingJobIds.has(job.jobId)}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            background: retryingJobIds.has(job.jobId) ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.15)',
+                            border: '1px solid rgba(239, 68, 68, 0.4)',
+                            borderRadius: '6px',
+                            color: 'var(--error)',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            cursor: retryingJobIds.has(job.jobId) ? 'not-allowed' : 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '5px',
+                            transition: 'all 0.15s',
+                            opacity: retryingJobIds.has(job.jobId) ? 0.6 : 1,
+                          }}
+                        >
+                          {retryingJobIds.has(job.jobId) ? (
+                            <>
+                              <span
+                                style={{
+                                  width: '10px',
+                                  height: '10px',
+                                  border: '2px solid rgba(239,68,68,0.4)',
+                                  borderTopColor: 'var(--error)',
+                                  borderRadius: '50%',
+                                  animation: 'spin 0.8s linear infinite',
+                                  flexShrink: 0,
+                                }}
+                              />
+                              재시도 중...
+                            </>
+                          ) : (
+                            <>
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <polyline points="1 4 1 10 7 10" />
+                                <path d="M3.51 15a9 9 0 1 0 .49-3.74" />
+                              </svg>
+                              재시도
+                            </>
+                          )}
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               );

@@ -83,7 +83,7 @@ export default function ResultPage() {
 
       if (e.code === 'Space') {
         e.preventDefault();
-        video.paused ? video.play() : video.pause();
+        video.paused ? video.play().catch((e) => { if (e.name !== 'AbortError') throw e; }) : video.pause();
       } else if (e.code === 'ArrowLeft') {
         e.preventDefault();
         video.currentTime = Math.max(0, video.currentTime - 5);
@@ -472,7 +472,7 @@ export default function ResultPage() {
             <div
               onClick={() => {
                 if (!videoRef.current) return;
-                videoRef.current.paused ? videoRef.current.play() : videoRef.current.pause();
+                videoRef.current.paused ? videoRef.current.play().catch((e) => { if (e.name !== 'AbortError') throw e; }) : videoRef.current.pause();
               }}
 style={{
                 position: 'absolute',
